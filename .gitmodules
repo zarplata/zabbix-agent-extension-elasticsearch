@@ -1,0 +1,9 @@
+[submodule "vendor/github.com/blacked/go-zabbix"]
+	path = vendor/github.com/blacked/go-zabbix
+	url = https://github.com/blacked/go-zabbix
+[submodule "vendor/github.com/docopt/docopt-go"]
+	path = vendor/github.com/docopt/docopt-go
+	url = https://github.com/docopt/docopt-go
+[submodule "vendor/github.com/reconquest/hierr-go"]
+	path = vendor/github.com/reconquest/hierr-go
+	url = https://github.com/reconquest/hierr-go

@@ -1,0 +1,164 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+
+	"github.com/reconquest/hierr-go"
+)
+
+type ElasticClusterHealth struct {
+	ClusterName                 string  `json:"cluster_name"`
+	Status                      string  `json:"status"`
+	TimedOut                    bool    `json:"timed_out"`
+	NumderOfNodes               int64   `json:"number_of_nodes"`
+	NumberOfDataNodes           int64   `json:"number_of_data_nodes"`
+	ActivePrimaryShards         int64   `json:"active_primary_shards"`
+	ActiveShards                int64   `json:"active_shards"`
+	RelocatingShards            int64   `json:"relocating_shards"`
+	InitializingShards          int64   `json:"initializing_shards"`
+	UnassignedShards            int64   `json:"unassigned_shards"`
+	DelayedUnassignedShards     int64   `json:"delayed_unassigned_shards"`
+	NumberOfPendingTasks        int64   `json:"number_of_pending_tasks"`
+	NumberOfInFlightFetch       int64   `json:"number_of_in_flight_fetch"`
+	TaskMaxWaitingInQueueMillis int64   `json:"task_max_waiting_in_queue_millis"`
+	ActiveShardsPercent         float64 `json:"active_shards_percent_as_number"`
+}
+
+type ElasticNodesStats struct {
+	Nodes map[string]ElasticNodeStats `json:"nodes"`
+}
+
+type ElasticNodeStats struct {
+	JVM ElasticNodeStatsJVM `json:"jvm"`
+}
+
+type ElasticNodeStatsJVM struct {
+	Timestamp      int64                                          `json:"timestamp"`
+	UptimeInMillis int64                                          `json:"uptime_in_millis"`
+	Mem            ElasticNodeStatsJVMMem                         `json:"mem"`
+	Threads        ElasticNodeStatsJVMThreadsStats                `json:"threads"`
+	GC             ElasticNodeStatsJVMGC                          `json:"gc"`
+	BufferPools    map[string]ElasticNodeStatsJVMBufferPoolsStats `json:"buffer_pools"`
+	Classes        ElasticNodeStatsJVMClassesStats                `json:"classes"`
+}
+
+type ElasticNodeStatsJVMMem struct {
+	HeapUsedInBytes         int64                                       `json:"heap_used_in_bytes"`
+	HeapUsedPercent         int64                                       `json:"heap_used_percent"`
+	HeapCommittedInBytes    int64                                       `json:"heap_committed_in_bytes"`
+	HeapMaxInBytes          int64                                       `json:"heap_max_in_bytes"`
+	NonHeapUsedInBytes      int64                                       `json:"non_heap_used_in_bytes"`
+	NonHeapCommittedInBytes int64                                       `json:"non_heap_committed_in_bytes"`
+	Pools                   map[string]ElasticNodeStatsJVMMemPoolsStats `json:"pools"`
+}
+
+type ElasticNodeStatsJVMMemPoolsStats struct {
+	UsedInBytes     int64 `json:"used_in_bytes"`
+	MaxInBytes      int64 `json:"max_in_bytes"`
+	PeakUsedInBytes int64 `json:"peak_used_in_bytes"`
+	PeakMaxInBytes  int64 `json:"peak_max_in_bytes"`
+}
+
+type ElasticNodeStatsJVMThreadsStats struct {
+	Count     int64 `json:"count"`
+	PeakCount int64 `json:"peak_count"`
+}
+
+type ElasticNodeStatsJVMGC struct {
+	Collectors map[string]ElasticNodeStatsJVMGCCollectorsStats `json:"collectors"`
+}
+
+type ElasticNodeStatsJVMGCCollectorsStats struct {
+	CollectionCount        int64 `json:"collection_count"`
+	CollectionTimeInMillis int64 `json:"collection_time_in_millis"`
+}
+
+type ElasticNodeStatsJVMBufferPoolsStats struct {
+	Count                int64 `json:"count"`
+	UsedInBytes          int64 `json:"used_in_bytes"`
+	TotalCapacityInBytes int64 `json:"total_capacity_in_bytes"`
+}
+
+type ElasticNodeStatsJVMClassesStats struct {
+	CurrentLoadedCount int64 `json:"current_loaded_count"`
+	TotalLoadedCount   int64 `json:"total_loaded_count"`
+	TotalUnloadedCount int64 `json:"total_unloaded_count"`
+}
+
+func getClusterHealth(
+	elasticDSN string,
+) (*ElasticClusterHealth, error) {
+
+	var elasticClusterHealth ElasticClusterHealth
+
+	clutserHealthURL := fmt.Sprintf("http://%s/_cluster/health", elasticDSN)
+	clusterHealthResponse, err := http.Get(clutserHealthURL)
+	if err != nil {
+		return nil, hierr.Errorf(
+			err.Error(),
+			"can`t get cluster health from Elasticsearch %s",
+			elasticDSN,
+		)
+	}
+
+	defer clusterHealthResponse.Body.Close()
+
+	if clusterHealthResponse.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(
+			"can`t get cluster health, Elasticsearch cluster returned %d HTTP code, expected %d HTTP code",
+			clusterHealthResponse.StatusCode,
+			http.StatusOK,
+		)
+	}
+
+	err = json.NewDecoder(clusterHealthResponse.Body).Decode(&elasticClusterHealth)
+	if err != nil {
+		return nil, hierr.Errorf(
+			err.Error(),
+			"can`t decode cluster health response from Elasticsearch %s",
+			elasticDSN,
+		)
+	}
+
+	return &elasticClusterHealth, nil
+}
+
+func getNodeStats(
+	elasticDSN string,
+) (*ElasticNodesStats, error) {
+
+	var elasticNodesStats ElasticNodesStats
+
+	nodeStatsURL := fmt.Sprintf("http://%s/_nodes/_local/stats", elasticDSN)
+	nodeStatsResponse, err := http.Get(nodeStatsURL)
+	if err != nil {
+		return nil, hierr.Errorf(
+			err.Error(),
+			"can`t get node stats from Elasticsearch %s",
+			elasticDSN,
+		)
+	}
+
+	defer nodeStatsResponse.Body.Close()
+
+	if nodeStatsResponse.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(
+			"can`t get node stats, Elasticsearch node returned %d HTTP code, expected %d HTTP code",
+			nodeStatsResponse.StatusCode,
+			http.StatusOK,
+		)
+	}
+
+	err = json.NewDecoder(nodeStatsResponse.Body).Decode(&elasticNodesStats)
+	if err != nil {
+		return nil, hierr.Errorf(
+			err.Error(),
+			"can`t decode node stats response from Elasticsearch %s",
+			elasticDSN,
+		)
+	}
+
+	return &elasticNodesStats, nil
+}

@@ -1,0 +1,6 @@
+.out/ 
+vendor/
+*.xz
+/src
+/pkg
+/zabbix-agent-extension-elasticsearch
