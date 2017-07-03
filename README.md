@@ -82,15 +82,16 @@ In order to start getting metrics, it is enough to import template and attach it
 
 `WARNING:` You must define macro with name - `{$ZABBIX_SERVER_IP}` in global or local (template) scope with IP address of  zabbix server.
 
+On one node of cluster set MACRO `{$GROUPNAME}` = `REAL_ZABBIX_GROUP`. This group must include all nodes of the cluster.
+Only this one node will be triggered cluster status (low level discovery added aggregate checks of cluster health).
+
 ### Customize key prefix
 It may you need if key in template already used.
 
-Change key `elasticsearch.*` -> `service.elasticsearch.*`:
-Replace `template_elasticsearch_service.xml` whit your prefix:
+If you need change key `elasticsearch.*` -> `YOUR_PREFIX_PART.elasticsearch.*`, run script `custom_key_template.sh` whit `YOUR_PREFIX_PART` and import updated zabbix template `template_elasticsearch_service.xml`.
 
 ```sh
-sed 's/elasticsearch./service.elasticsearch./g' -i template_elasticsearch_service.xml
-sed 's/None_pfx/service/g' -i template_elasticsearch_service.xml
+./custom_key_template.sh YOUR_PREFIX_PART
 ```
 
 ### Customize Elasticsearch ip/port, zabbix-server port
