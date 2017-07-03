@@ -8,6 +8,7 @@ This extension obtains stats of two types:
 
 #### Node stat
 https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-stats.html
+
 _This version supports only JVM stats, because now we are only interested in this metric._
 
 - [ ] roles
@@ -78,6 +79,7 @@ zabbix-agent-extension-elasticsearch requires [zabbix-agent](http://www.zabbix.c
 
 ### Zabbix configuration
 In order to start getting metrics, it is enough to import template and attach it to monitored node.
+
 `WARNING:` You must define macro with name - `{$ZABBIX_SERVER_IP}` in global or local (template) scope with IP address of  zabbix server.
 
 ### Customize key prefix
