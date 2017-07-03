@@ -39,7 +39,7 @@ package() {
 	cd "$srcdir/$pkgname"
     ZBX_INC_DIR=/etc/zabbix/zabbix_agentd.conf.d/
 
-    install -Dm 0755 out/"${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
+    install -Dm 0755 .out/"${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
     install -Dm 0644 ../"${pkgname}.conf" "${pkgdir}${ZBX_INC_DIR}${pkgname}.conf"
     
 }
