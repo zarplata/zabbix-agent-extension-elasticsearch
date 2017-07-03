@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>2.0</version>
-    <date>2017-06-30T05:27:35Z</date>
+    <date>2017-07-03T06:18:12Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -1495,7 +1495,7 @@
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>grpmax[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.delayed_unassigned_shards&quot;,last,0]</key>
+                            <key>grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.delayed_unassigned_shards&quot;,last,0]</key>
                             <delay>30</delay>
                             <history>90</history>
                             <trends>365</trends>
@@ -1576,12 +1576,55 @@
                             <logtimefmt/>
                         </item_prototype>
                         <item_prototype>
+                            <name>Aggregate cluster relocating shards</name>
+                            <type>8</type>
+                            <snmp_community/>
+                            <multiplier>0</multiplier>
+                            <snmp_oid/>
+                            <key>grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.relocating_shards&quot;,last,0]</key>
+                            <delay>30</delay>
+                            <history>90</history>
+                            <trends>365</trends>
+                            <status>0</status>
+                            <value_type>3</value_type>
+                            <allowed_hosts/>
+                            <units/>
+                            <delta>0</delta>
+                            <snmpv3_contextname/>
+                            <snmpv3_securityname/>
+                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                            <snmpv3_authpassphrase/>
+                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                            <snmpv3_privpassphrase/>
+                            <formula>1</formula>
+                            <delay_flex/>
+                            <params/>
+                            <ipmi_sensor/>
+                            <data_type>0</data_type>
+                            <authtype>0</authtype>
+                            <username/>
+                            <password/>
+                            <publickey/>
+                            <privatekey/>
+                            <port/>
+                            <description/>
+                            <inventory_link>0</inventory_link>
+                            <applications>
+                                <application>
+                                    <name>Elasticsearch</name>
+                                </application>
+                            </applications>
+                            <valuemap/>
+                            <logtimefmt/>
+                        </item_prototype>
+                        <item_prototype>
                             <name>Aggregate cluster unassigned shards</name>
                             <type>8</type>
                             <snmp_community/>
                             <multiplier>0</multiplier>
                             <snmp_oid/>
-                            <key>grpmax[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.unassigned_shards&quot;,last,0]</key>
+                            <key>grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.unassigned_shards&quot;,last,0]</key>
                             <delay>30</delay>
                             <history>90</history>
                             <trends>365</trends>
@@ -2009,7 +2052,7 @@
                     <trigger_prototypes>
                         <trigger_prototype>
                             <expression>{Template Elasticsearch Service:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.active_shards_percent&quot;,last,0].last()}&lt;100</expression>
-                            <name>Aggregate cluster active shards percent</name>
+                            <name>Cluster active shards percent {ITEM.LASTVALUE1}</name>
                             <url/>
                             <status>0</status>
                             <priority>4</priority>
@@ -2017,17 +2060,8 @@
                             <type>0</type>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Elasticsearch Service:grpmax[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.delayed_unassigned_shards&quot;,last,0].last()}&gt;0</expression>
-                            <name>Aggregate cluster delayed unassigned shards</name>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template Elasticsearch Service:grpmax[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.unassigned_shards&quot;,last,0].last()}&gt;0</expression>
-                            <name>Aggregate cluster unassigned shards</name>
+                            <expression>{Template Elasticsearch Service:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.delayed_unassigned_shards&quot;,last,0].last()}&gt;0</expression>
+                            <name>Cluster delayed unassigned shards {ITEM.LASTVALUE1}</name>
                             <url/>
                             <status>0</status>
                             <priority>4</priority>
@@ -2053,8 +2087,17 @@
                             <type>0</type>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>({Template Elasticsearch Service:elasticsearch.node_stats.jvm.mem.pools.used_in_bytes.[{#JVMMEMPOOLS}].last()}/{Template Elasticsearch Service:elasticsearch.node_stats.jvm.mem.pools.max_in_bytes.[{#JVMMEMPOOLS}].last()})&gt;0.9</expression>
-                            <name>JVM mem pools {#JVMMEMPOOLS} used in bytes {ITEM.LASTVALUE1}</name>
+                            <expression>{Template Elasticsearch Service:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.relocating_shards&quot;,last,0].last()}&gt;0</expression>
+                            <name>Cluster relocating shards {ITEM.LASTVALUE1}</name>
+                            <url/>
+                            <status>0</status>
+                            <priority>3</priority>
+                            <description/>
+                            <type>0</type>
+                        </trigger_prototype>
+                        <trigger_prototype>
+                            <expression>{Template Elasticsearch Service:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.unassigned_shards&quot;,last,0].last()}&gt;0</expression>
+                            <name>Cluster unassigned shards {ITEM.LASTVALUE1}</name>
                             <url/>
                             <status>0</status>
                             <priority>4</priority>
@@ -2090,10 +2133,25 @@
             <name>Elasticsearch cannot get stats</name>
             <url/>
             <status>0</status>
-            <priority>4</priority>
+            <priority>3</priority>
             <description/>
             <type>0</type>
             <dependencies/>
+        </trigger>
+        <trigger>
+            <expression>{Template Elasticsearch Service:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;80</expression>
+            <name>Elasticsearch jvm mem heap used percent {ITEM.LASTVALUE1}</name>
+            <url/>
+            <status>0</status>
+            <priority>4</priority>
+            <description/>
+            <type>0</type>
+            <dependencies>
+                <dependency>
+                    <name>Elasticsearch jvm mem heap used percent {ITEM.LASTVALUE1}</name>
+                    <expression>{Template Elasticsearch Service:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;90</expression>
+                </dependency>
+            </dependencies>
         </trigger>
         <trigger>
             <expression>{Template Elasticsearch Service:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;90</expression>
