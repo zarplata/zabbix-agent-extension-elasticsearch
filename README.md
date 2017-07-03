@@ -5,58 +5,58 @@ zabbix-agent-extension-elasticsearch - this extension for monitoring Elasticsear
 ### Description
 
 This extension monitored:
-[x] Get stats [trigger]
-[x] process is NOT running [trigger]
+- [x] Get stats [trigger]
+- [x] process is NOT running [trigger]
 
 #### Elasticsearch cluster:
-[x] health
-[x] health (integer -> aggregate health for all cluster nodes)
-[x] name
-[x] number of nodes
-[x] number of data nodes
-[x] number of in flight fetch
-[x] number of pending tasks
-[x] active primary shards
-[x] active shards
-[x] active shards percent
-[x] initializing shards
-[x] relocating shards
-[x] unassigned shards
-[x] delayed unassigned shards
-[x] task max waiting in queue
-[x] timeout
+- [x] health
+- [x] health (integer -> aggregate health for all cluster nodes)
+- [x] name
+- [x] number of nodes
+- [x] number of data nodes
+- [x] number of in flight fetch
+- [x] number of pending tasks
+- [x] active primary shards
+- [x] active shards
+- [x] active shards percent
+- [x] initializing shards
+- [x] relocating shards
+- [x] unassigned shards
+- [x] delayed unassigned shards
+- [x] task max waiting in queue
+- [x] timeout
 
 #### Elasticsearch node
-[x] jvm classes current loaded count
-[x] jvm classes total loaded count
-[x] jvm classes total unloaded count
-[x] jvm mem heap committed in bytes
-[x] jvm mem heap max in bytes
-[x] jvm mem heap used in bytes
-[x] jvm mem heap used percent [trigger]
-[x] jvm mem non heap committed in bytes
-[x] jvm mem non heap used in bytes
-[x] jvm threads count
-[x] jvm threads peak count
-[x] jvm timestamp
-[x] jvm uptime
+- [x] jvm classes current loaded count
+- [x] jvm classes total loaded count
+- [x] jvm classes total unloaded count
+- [x] jvm mem heap committed in bytes
+- [x] jvm mem heap max in bytes
+- [x] jvm mem heap used in bytes
+- [x] jvm mem heap used percent [trigger]
+- [x] jvm mem non heap committed in bytes
+- [x] jvm mem non heap used in bytes
+- [x] jvm threads count
+- [x] jvm threads peak count
+- [x] jvm timestamp
+- [x] jvm uptime
 
 ### Discovery
-[x] JVM buffer pools {#JVMBUFFERSPOOLS} count
-[x] JVM buffer pools {#JVMBUFFERSPOOLS} total_capacity_in_bytes
-[x] JVM buffer pools {#JVMBUFFERSPOOLS} used_in_bytes
-[x] JVM gc collectors {#JVMGCCOLLECTORS} collection count
-[x] JVM gc collectors {#JVMGCCOLLECTORS} collection time
-[x] JVM mem pools {#JVMMEMPOOLS} max in bytes
-[x] JVM mem pools {#JVMMEMPOOLS} peak max in bytes
-[x] JVM mem pools {#JVMMEMPOOLS} peak used in bytes
-[x] JVM mem pools {#JVMMEMPOOLS} used in bytes [trigger]
+- [x] JVM buffer pools {#JVMBUFFERSPOOLS} count
+- [x] JVM buffer pools {#JVMBUFFERSPOOLS} total_capacity_in_bytes
+- [x] JVM buffer pools {#JVMBUFFERSPOOLS} used_in_bytes
+- [x] JVM gc collectors {#JVMGCCOLLECTORS} collection count
+- [x] JVM gc collectors {#JVMGCCOLLECTORS} collection time
+- [x] JVM mem pools {#JVMMEMPOOLS} max in bytes
+- [x] JVM mem pools {#JVMMEMPOOLS} peak max in bytes
+- [x] JVM mem pools {#JVMMEMPOOLS} peak used in bytes
+- [x] JVM mem pools {#JVMMEMPOOLS} used in bytes [trigger]
 
 #### Discovery (aggregate main node)
-[x] Aggregate cluster active shards percent [trigger]
-[x] Aggregate cluster delayed unassigned shards [trigger]
-[x] Aggregate cluster health [trigger]
-[x] Aggregate cluster unassigned shards [trigger]
+- [x] Aggregate cluster active shards percent [trigger]
+- [x] Aggregate cluster delayed unassigned shards [trigger]
+- [x] Aggregate cluster health [trigger]
+- [x] Aggregate cluster unassigned shards [trigger]
 
 ### Tech
 
