@@ -2,95 +2,88 @@
 
 zabbix-agent-extension-elasticsearch - this extension for monitoring Elasticsearch cluster and node health/status.
 
-### Description
+### Supported features
 
-This extension monitored:
-- [x] Get stats [trigger]
-- [x] process is NOT running [trigger]
+This extension obtains stats of two types:
 
-#### Elasticsearch cluster:
-- [x] health
-- [x] health (integer -> aggregate health for all cluster nodes)
-- [x] name
-- [x] number of nodes
-- [x] number of data nodes
-- [x] number of in flight fetch
-- [x] number of pending tasks
-- [x] active primary shards
-- [x] active shards
-- [x] active shards percent
-- [x] initializing shards
-- [x] relocating shards
-- [x] unassigned shards
-- [x] delayed unassigned shards
-- [x] task max waiting in queue
-- [x] timeout
+#### Node stat
+https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-stats.html
+_This version supports only JVM stats, because now we are only interested in this metric._
 
-#### Elasticsearch node
-- [x] jvm classes current loaded count
-- [x] jvm classes total loaded count
-- [x] jvm classes total unloaded count
-- [x] jvm mem heap committed in bytes
-- [x] jvm mem heap max in bytes
-- [x] jvm mem heap used in bytes
-- [x] jvm mem heap used percent [trigger]
-- [x] jvm mem non heap committed in bytes
-- [x] jvm mem non heap used in bytes
-- [x] jvm threads count
-- [x] jvm threads peak count
-- [x] jvm timestamp
-- [x] jvm uptime
+- [ ] roles
+- [ ] attributes
+- [ ] indices
+- [ ] os
+- [ ] processes
+- [x] jvm
+- [ ] thread_pool
+- [ ] fs
+- [ ] transport
+- [ ] http
+- [ ] breakers
+- [ ] script
+- [ ] discovery
+- [ ] ingest
 
-### Discovery
-- [x] JVM buffer pools {#JVMBUFFERSPOOLS} count
-- [x] JVM buffer pools {#JVMBUFFERSPOOLS} total_capacity_in_bytes
-- [x] JVM buffer pools {#JVMBUFFERSPOOLS} used_in_bytes
-- [x] JVM gc collectors {#JVMGCCOLLECTORS} collection count
-- [x] JVM gc collectors {#JVMGCCOLLECTORS} collection time
-- [x] JVM mem pools {#JVMMEMPOOLS} max in bytes
-- [x] JVM mem pools {#JVMMEMPOOLS} peak max in bytes
-- [x] JVM mem pools {#JVMMEMPOOLS} peak used in bytes
-- [x] JVM mem pools {#JVMMEMPOOLS} used in bytes [trigger]
-
-#### Discovery (aggregate main node)
-- [x] Aggregate cluster active shards percent [trigger]
-- [x] Aggregate cluster delayed unassigned shards [trigger]
-- [x] Aggregate cluster health [trigger]
-- [x] Aggregate cluster unassigned shards [trigger]
-
-### Tech
-
-Binary `/usr/bin/zabbix-agent-extension-elasticsearch`
-
-Zabbix-agent config `/etc/zabbix/zabbix_agentd.conf.d/zabbix-agent-extension-elasticsearch.conf`
-
-Zabbix template `template_elasticsearch_service.xml`
-
-Add global or local (template) MARCO {$ZABBIX_SERVER_IP} with your zabbix-server IP.
-
-Restart zabbix-agent after install extension.
+#### Cluster health
+https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-health.html
+- [x] cluster_name
+- [x] status
+- [x] timed_out
+- [x] number_of_nodes
+- [x] number_of_data_nodes
+- [x] active_primary_shards
+- [x] active_shards
+- [x] relocating_shards
+- [x] initializing_shards
+- [x] unassigned_shards
+- [x] delayed_unassigned_shards
+- [x] number_of_pending_tasks
+- [x] number_of_in_flight_fetch
+- [x] task_max_waiting_in_queue_millis
+- [x] active_shards_percent_as_number
 
 ### Installation
 
+#### Manual build
+
 ```sh
-git clone ssh://git@git.rn/devops/zabbix-agent-extension-elasticsearch.git
+# Building
+git clone https://github.com/zarplata/zabbix-agent-extension-elasticsearch.git
 cd zabbix-agent-extension-elasticsearch
 make
+
+#Installing
 make install
+
+# By default, binary installs into /usr/bin/ and zabbix config in /etc/zabbix/zabbix_agentd.conf.d/ but,
+# you may manually copy binary to your executable path and zabbix config to specific include directory
 ```
 
-### Deletion
+#### Arch Linux package
+```sh
+# Building
+git clone https://github.com/zarplata/zabbix-agent-extension-elasticsearch.git
+git checkout pkgbuild
 
+makepkg
+
+#Installing
+pacman -U *.tar.xz
 ```
-make remove
-```
+
+### Dependencies
 
 zabbix-agent-extension-elasticsearch requires [zabbix-agent](http://www.zabbix.com/download) v2.4+ to run.
 
+### Zabbix configuration
+In order to start getting metrics, it is enough to import template and attach it to monitored node.
+`WARNING:` You must define macro with name - `{$ZABBIX_SERVER_IP}` in global or local (template) scope with IP address of  zabbix server.
+
 ### Customize key prefix
+It may you need if key in template already used.
 
 Change key `elasticsearch.*` -> `service.elasticsearch.*`:
-
 Replace `template_elasticsearch_service.xml` whit your prefix:
 
 ```sh
@@ -106,4 +99,3 @@ Add new param -e $3 (--elasticsearch $3) in `/etc/zabbix/zabbix_agentd.conf.d/za
 
 ```sh
 elasticsearch.stats[{$ZABBIX_SERVER_IP},{$ES_ZBX_PREFIX},ESIP:ESPORT]
-```
