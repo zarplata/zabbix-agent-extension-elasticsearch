@@ -1,4 +1,5 @@
-# Maintainer: Andrey Kitsul <a.kitsul@office.ngs.ru>
+# Maintainer: Andrey Kitsul <a.kitsul@zarplata.ru>
+# Contributor: Andrey Platonov <a.platonov@zarplata.ru>
 
 pkgname=zabbix-agent-extension-elasticsearch
 pkgver=20170630.3_52d780d
