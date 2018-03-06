@@ -19,7 +19,7 @@ var (
 )
 
 func main() {
-	usage := `zabbix-agent-extension-elastic
+	usage := `zabbix-agent-extension-elasticsearch
 
 Usage:
   zabbix-agent-extension-elastic [options]
