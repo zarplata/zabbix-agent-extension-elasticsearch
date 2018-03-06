@@ -87,6 +87,39 @@ type ElasticNodeStatsJVMClassesStats struct {
 	TotalUnloadedCount int64 `json:"total_unloaded_count"`
 }
 
+type ElasticIndicesStats struct {
+	Shards  ElasticIndicesStatsShards            `json:"_shards"`
+	All     ElasticIndicesStatsAll               `json:"_all"`
+	Indices map[string]ElasticIndicesStatsIndice `json:"indices"`
+}
+
+type ElasticIndicesStatsShards struct {
+	Total      int64 `json:"total"`
+	Successful int64 `json:"successful"`
+	Failed     int64 `json:"failed"`
+}
+
+type ElasticIndicesStatsAll struct {
+	Primaries ElasticIndicesStatsIndex `json:"primaries"`
+	Total     ElasticIndicesStatsIndex `json:"total"`
+}
+
+type ElasticIndicesStatsIndice struct {
+	Primaries ElasticIndicesStatsIndex `json:"primaries"`
+	Total     ElasticIndicesStatsIndex `json:"total"`
+}
+
+type ElasticIndicesStatsIndex struct {
+	Docs struct {
+		Count   int64 `json:"count"`
+		Deleted int64 `json:"deleted"`
+	} `json:"docs"`
+	Store struct {
+		SizeInBytes          int64 `json:"size_in_bytes"`
+		ThrottleTimeInMillis int64 `json:'throttle_time_in_millis"`
+	} `json:"store"`
+}
+
 func getClusterHealth(
 	elasticDSN string,
 ) (*ElasticClusterHealth, error) {
@@ -161,4 +194,40 @@ func getNodeStats(
 	}
 
 	return &elasticNodesStats, nil
+}
+
+func getIndicesStats(elasticDSN string) (*ElasticIndicesStats, error) {
+
+	var elasticIndicesStats ElasticIndicesStats
+
+	indicesStatsURL := fmt.Sprintf("http://%s/_stats", elasticDSN)
+	indicesStatsResponse, err := http.Get(indicesStatsURL)
+	if err != nil {
+		return nil, hierr.Errorf(
+			err.Error(),
+			"can`t get indices stats from Elasticsearch %s",
+			elasticDSN,
+		)
+	}
+
+	defer indicesStatsResponse.Body.Close()
+
+	if indicesStatsResponse.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(
+			"can`t get indices stats, Elasticsearch node returned %d HTTP code, expected %d HTTP code",
+			indicesStatsResponse.StatusCode,
+			http.StatusOK,
+		)
+	}
+
+	err = json.NewDecoder(indicesStatsResponse.Body).Decode(&elasticIndicesStats)
+	if err != nil {
+		return nil, hierr.Errorf(
+			err.Error(),
+			"can`t indices stats response from Elasticsearch %s",
+			elasticDSN,
+		)
+	}
+
+	return &elasticIndicesStats, nil
 }

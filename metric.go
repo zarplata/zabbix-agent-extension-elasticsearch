@@ -7,9 +7,9 @@ import (
 	zsend "github.com/blacked/go-zabbix"
 )
 
-func makePrefix(zabbixPrefix, key string) string {
+func makePrefix(prefix, key string) string {
 	return fmt.Sprintf(
-		"%s.%s", zabbixPrefix, key,
+		"%s.%s", prefix, key,
 	)
 
 }
@@ -18,7 +18,7 @@ func createClusterHealthMetrics(
 	hostname string,
 	clusterHealth *ElasticClusterHealth,
 	metrics []*zsend.Metric,
-	zabbixPrefix string,
+	prefix string,
 ) []*zsend.Metric {
 
 	healthToInt := make(map[string]int)
@@ -31,18 +31,18 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.cluster_name",
 			),
 			clusterHealth.ClusterName,
 		),
 	)
-    metrics = append(                                                                                                                                                                                                                      
-		metrics,                                                                                                                                                                                                                           
+	metrics = append(
+		metrics,
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.status_int",
 			),
 			strconv.Itoa(int(healthToInt[clusterHealth.Status])),
@@ -53,7 +53,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.status",
 			),
 			clusterHealth.Status,
@@ -65,7 +65,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.timed_out",
 			),
 			strconv.FormatBool(clusterHealth.TimedOut),
@@ -76,7 +76,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.number_of_nodes",
 			),
 			strconv.Itoa(int(clusterHealth.NumderOfNodes)),
@@ -87,7 +87,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.number_of_data_nodes",
 			),
 			strconv.Itoa(int(clusterHealth.NumberOfDataNodes)),
@@ -98,7 +98,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.active_primary_shards",
 			),
 			strconv.Itoa(int(clusterHealth.ActivePrimaryShards)),
@@ -109,7 +109,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.active_shards",
 			),
 			strconv.Itoa(int(clusterHealth.ActiveShards)),
@@ -120,7 +120,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.relocating_shards",
 			),
 			strconv.Itoa(int(clusterHealth.RelocatingShards)),
@@ -131,7 +131,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.initializing_shards",
 			),
 			strconv.Itoa(int(clusterHealth.InitializingShards)),
@@ -142,7 +142,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.unassigned_shards",
 			),
 			strconv.Itoa(int(clusterHealth.UnassignedShards)),
@@ -153,7 +153,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.delayed_unassigned_shards",
 			),
 			strconv.Itoa(int(clusterHealth.DelayedUnassignedShards)),
@@ -164,7 +164,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.number_of_pending_tasks",
 			),
 			strconv.Itoa(int(clusterHealth.NumberOfPendingTasks)),
@@ -175,7 +175,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.number_of_in_flight_fetch",
 			),
 			strconv.Itoa(int(clusterHealth.NumberOfInFlightFetch)),
@@ -186,7 +186,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.task_max_waiting_in_queue_millis",
 			),
 			strconv.Itoa(int(clusterHealth.TaskMaxWaitingInQueueMillis)),
@@ -197,7 +197,7 @@ func createClusterHealthMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"cluster_health.active_shards_percent",
 			),
 			strconv.Itoa(int(clusterHealth.ActiveShardsPercent)),
@@ -211,7 +211,7 @@ func createNodeStatsJVMMetrics(
 	hostname string,
 	nodesStats *ElasticNodesStats,
 	metrics []*zsend.Metric,
-	zabbixPrefix string,
+	prefix string,
 ) []*zsend.Metric {
 
 	for _, nodeStats := range nodesStats.Nodes {
@@ -220,7 +220,7 @@ func createNodeStatsJVMMetrics(
 			zsend.NewMetric(
 				hostname,
 				makePrefix(
-					zabbixPrefix,
+					prefix,
 					"node_stats.jvm.timestamp",
 				),
 				strconv.Itoa(int(nodeStats.JVM.Timestamp)),
@@ -231,24 +231,24 @@ func createNodeStatsJVMMetrics(
 			zsend.NewMetric(
 				hostname,
 				makePrefix(
-					zabbixPrefix,
+					prefix,
 					"node_stats.jvm.uptime_in_millis",
 				),
 				strconv.Itoa(int(nodeStats.JVM.UptimeInMillis)),
 			),
 		)
 
-		metrics = createNodeStatsJVMMemMetrics(hostname, metrics, &nodeStats, zabbixPrefix)
-		metrics = createNodeStatsJVMThreadsMetrics(hostname, metrics, &nodeStats, zabbixPrefix)
+		metrics = createNodeStatsJVMMemMetrics(hostname, metrics, &nodeStats, prefix)
+		metrics = createNodeStatsJVMThreadsMetrics(hostname, metrics, &nodeStats, prefix)
 
 		for collectorsName, nodeStatsJVMGCColletorsStats := range nodeStats.JVM.GC.Collectors {
-			metrics = createNodeStatsJVMGCCollectorsMetrics(hostname, metrics, &nodeStatsJVMGCColletorsStats, collectorsName, zabbixPrefix)
+			metrics = createNodeStatsJVMGCCollectorsMetrics(hostname, metrics, &nodeStatsJVMGCColletorsStats, collectorsName, prefix)
 		}
 
 		for bufferPoolsName, nodeStatsJVMBufferPoolsStats := range nodeStats.JVM.BufferPools {
-			metrics = createNodeStatsJVMBufferPoolsMetrics(hostname, metrics, &nodeStatsJVMBufferPoolsStats, bufferPoolsName, zabbixPrefix)
+			metrics = createNodeStatsJVMBufferPoolsMetrics(hostname, metrics, &nodeStatsJVMBufferPoolsStats, bufferPoolsName, prefix)
 		}
-		metrics = createNodeStatsJVMClassesMetrics(hostname, metrics, &nodeStats, zabbixPrefix)
+		metrics = createNodeStatsJVMClassesMetrics(hostname, metrics, &nodeStats, prefix)
 	}
 
 	return metrics
@@ -258,7 +258,7 @@ func createNodeStatsJVMMemMetrics(
 	hostname string,
 	metrics []*zsend.Metric,
 	nodeStats *ElasticNodeStats,
-	zabbixPrefix string,
+	prefix string,
 ) []*zsend.Metric {
 
 	metrics = append(
@@ -266,7 +266,7 @@ func createNodeStatsJVMMemMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.mem.heap_used_in_bytes",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Mem.HeapUsedInBytes)),
@@ -277,7 +277,7 @@ func createNodeStatsJVMMemMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.mem.heap_used_percent",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Mem.HeapUsedPercent)),
@@ -288,7 +288,7 @@ func createNodeStatsJVMMemMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.mem.heap_committed_in_bytes",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Mem.NonHeapCommittedInBytes)),
@@ -299,7 +299,7 @@ func createNodeStatsJVMMemMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.mem.heap_max_in_bytes",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Mem.HeapMaxInBytes)),
@@ -310,7 +310,7 @@ func createNodeStatsJVMMemMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.mem.non_heap_used_in_bytes",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Mem.NonHeapUsedInBytes)),
@@ -321,7 +321,7 @@ func createNodeStatsJVMMemMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.mem.non_heap_committed_in_bytes",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Mem.NonHeapCommittedInBytes)),
@@ -329,7 +329,7 @@ func createNodeStatsJVMMemMetrics(
 	)
 
 	for poolsName, nodeStatsJVMMemPoolsStats := range nodeStats.JVM.Mem.Pools {
-		metrics = createNodeStatsJVMMemPoolsMetrics(hostname, metrics, &nodeStatsJVMMemPoolsStats, poolsName, zabbixPrefix)
+		metrics = createNodeStatsJVMMemPoolsMetrics(hostname, metrics, &nodeStatsJVMMemPoolsStats, poolsName, prefix)
 	}
 
 	return metrics
@@ -340,7 +340,7 @@ func createNodeStatsJVMMemPoolsMetrics(
 	metrics []*zsend.Metric,
 	nodeStatsJVMMemPoolsStats *ElasticNodeStatsJVMMemPoolsStats,
 	poolsName string,
-	zabbixPrefix string,
+	prefix string,
 ) []*zsend.Metric {
 
 	metrics = append(
@@ -348,7 +348,7 @@ func createNodeStatsJVMMemPoolsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				fmt.Sprintf("node_stats.jvm.mem.pools.used_in_bytes.[%s]", poolsName),
 			),
 			strconv.Itoa(int(nodeStatsJVMMemPoolsStats.UsedInBytes)),
@@ -359,7 +359,7 @@ func createNodeStatsJVMMemPoolsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				fmt.Sprintf("node_stats.jvm.mem.pools.max_in_bytes.[%s]", poolsName),
 			),
 			strconv.Itoa(int(nodeStatsJVMMemPoolsStats.MaxInBytes)),
@@ -370,7 +370,7 @@ func createNodeStatsJVMMemPoolsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				fmt.Sprintf("node_stats.jvm.mem.pools.peak_used_in_bytes.[%s]", poolsName),
 			),
 			strconv.Itoa(int(nodeStatsJVMMemPoolsStats.PeakUsedInBytes)),
@@ -381,7 +381,7 @@ func createNodeStatsJVMMemPoolsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				fmt.Sprintf("node_stats.jvm.mem.pools.peak_max_in_bytes.[%s]", poolsName),
 			),
 			strconv.Itoa(int(nodeStatsJVMMemPoolsStats.PeakMaxInBytes)),
@@ -395,7 +395,7 @@ func createNodeStatsJVMThreadsMetrics(
 	hostname string,
 	metrics []*zsend.Metric,
 	nodeStats *ElasticNodeStats,
-	zabbixPrefix string,
+	prefix string,
 ) []*zsend.Metric {
 
 	metrics = append(
@@ -403,7 +403,7 @@ func createNodeStatsJVMThreadsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.threads.count",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Threads.Count)),
@@ -414,7 +414,7 @@ func createNodeStatsJVMThreadsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.threads.peak_count",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Threads.PeakCount)),
@@ -429,7 +429,7 @@ func createNodeStatsJVMGCCollectorsMetrics(
 	metrics []*zsend.Metric,
 	nodeStatsJVMGCColletorsStats *ElasticNodeStatsJVMGCCollectorsStats,
 	collectorsName string,
-	zabbixPrefix string,
+	prefix string,
 ) []*zsend.Metric {
 
 	metrics = append(
@@ -437,7 +437,7 @@ func createNodeStatsJVMGCCollectorsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				fmt.Sprintf("node_stats.jvm.gc.collectors.collection_cout.[%s]", collectorsName),
 			),
 			strconv.Itoa(int(nodeStatsJVMGCColletorsStats.CollectionCount)),
@@ -448,7 +448,7 @@ func createNodeStatsJVMGCCollectorsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				fmt.Sprintf("node_stats.jvm.gc.collectors.collection_time_in_millis.[%s]", collectorsName),
 			),
 			strconv.Itoa(int(nodeStatsJVMGCColletorsStats.CollectionTimeInMillis)),
@@ -463,7 +463,7 @@ func createNodeStatsJVMBufferPoolsMetrics(
 	metrics []*zsend.Metric,
 	nodeStatsJVMBufferPoolsStats *ElasticNodeStatsJVMBufferPoolsStats,
 	bufferPoolsName string,
-	zabbixPrefix string,
+	prefix string,
 ) []*zsend.Metric {
 
 	metrics = append(
@@ -471,7 +471,7 @@ func createNodeStatsJVMBufferPoolsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				fmt.Sprintf("node_stats.jvm.buffer_polls.count.[%s]", bufferPoolsName),
 			),
 			strconv.Itoa(int(nodeStatsJVMBufferPoolsStats.Count)),
@@ -482,7 +482,7 @@ func createNodeStatsJVMBufferPoolsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				fmt.Sprintf("node_stats.jvm.buffer_polls.used_in_bytes.[%s]", bufferPoolsName),
 			),
 			strconv.Itoa(int(nodeStatsJVMBufferPoolsStats.UsedInBytes)),
@@ -493,7 +493,7 @@ func createNodeStatsJVMBufferPoolsMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				fmt.Sprintf("node_stats.jvm.buffer_polls.total_capacity_in_bytes.[%s]", bufferPoolsName),
 			),
 			strconv.Itoa(int(nodeStatsJVMBufferPoolsStats.TotalCapacityInBytes)),
@@ -507,7 +507,7 @@ func createNodeStatsJVMClassesMetrics(
 	hostname string,
 	metrics []*zsend.Metric,
 	nodeStats *ElasticNodeStats,
-	zabbixPrefix string,
+	prefix string,
 ) []*zsend.Metric {
 
 	metrics = append(
@@ -515,7 +515,7 @@ func createNodeStatsJVMClassesMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.classes.current_loaded_count",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Classes.CurrentLoadedCount)),
@@ -526,7 +526,7 @@ func createNodeStatsJVMClassesMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.classes.total_loaded_count",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Classes.TotalLoadedCount)),
@@ -537,12 +537,111 @@ func createNodeStatsJVMClassesMetrics(
 		zsend.NewMetric(
 			hostname,
 			makePrefix(
-				zabbixPrefix,
+				prefix,
 				"node_stats.jvm.classes.total_unloaded_count",
 			),
 			strconv.Itoa(int(nodeStats.JVM.Classes.TotalUnloadedCount)),
 		),
 	)
+
+	return metrics
+}
+
+func createIndicesStats(
+	hostname string,
+	indicesStats *ElasticIndicesStats,
+	metrics []*zsend.Metric,
+	prefix string,
+) []*zsend.Metric {
+
+	for indexName, indexStats := range indicesStats.Indices {
+
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					fmt.Sprintf(
+						"indices_stats.total.docs.count.[%s]",
+						indexName,
+					),
+				),
+				strconv.Itoa(int(indexStats.Total.Docs.Count)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					fmt.Sprintf(
+						"indices_stats.total.docs.deleted.[%s]",
+						indexName,
+					),
+				),
+				strconv.Itoa(int(indexStats.Total.Docs.Deleted)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					fmt.Sprintf(
+						"indices_stats.primaries.docs.count.[%s]",
+						indexName,
+					),
+				),
+				strconv.Itoa(int(indexStats.Primaries.Docs.Count)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					fmt.Sprintf(
+						"indices_stats.primaries.docs.deleted.[%s]",
+						indexName,
+					),
+				),
+				strconv.Itoa(int(indexStats.Primaries.Docs.Deleted)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					fmt.Sprintf(
+						"indices_stats.total.store.size.[%s]",
+						indexName,
+					),
+				),
+				strconv.Itoa(int(indexStats.Total.Store.SizeInBytes)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					fmt.Sprintf(
+						"indices_stats.primaries.store.size.[%s]",
+						indexName,
+					),
+				),
+				strconv.Itoa(int(indexStats.Primaries.Store.SizeInBytes)),
+			),
+		)
+
+	}
 
 	return metrics
 }
