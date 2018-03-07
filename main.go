@@ -115,7 +115,7 @@ Misc options:
 			metrics,
 			prefix,
 		)
-	default:
+	case "global":
 		logger.Debug("try get cluster health")
 		clusterHealth, err := getClusterHealth(elasticDSN)
 		if err != nil {
@@ -154,6 +154,9 @@ Misc options:
 			metrics,
 			prefix,
 		)
+	default:
+		fmt.Println("Unsupported type of stats.")
+		os.Exit(0)
 	}
 	packet := zsend.NewPacket(metrics)
 	sender := zsend.NewSender(
