@@ -224,7 +224,7 @@ func getIndicesStats(elasticDSN string) (*ElasticIndicesStats, error) {
 	if err != nil {
 		return nil, hierr.Errorf(
 			err.Error(),
-			"can`t indices stats response from Elasticsearch %s",
+			"can`t decode indices stats response from Elasticsearch %s",
 			elasticDSN,
 		)
 	}
