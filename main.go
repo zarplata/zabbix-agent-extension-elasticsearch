@@ -10,54 +10,59 @@ import (
 	docopt "github.com/docopt/docopt-go"
 )
 
-var version = "[manual build]"
+var (
+	version = "[manual build]"
+	err     error
+)
 
 func main() {
-	usage := `zabbix-agent-extension-elastic
+	usage := `zabbix-agent-extension-elasticsearch
 
 Usage:
-  zabbix-agent-extension-elastic [-e --elasticsearch <dsn>] [-z --zabbix-host <zhost>] [-p --zabbix-port <zport>] [--zabbix-prefix <prefix>]
-  zabbix-agent-extension-elastic [-e --elasticsearch <dsn>] [--discovery] [--agg-group <group>]
-  zabbix-agent-extension-elastic [-h | --help]
+  zabbix-agent-extension-elastic [options]
 
 Options:
-	-e --elasticsearch <dsn>      DSN of Elasticsearch server [default: 127.0.0.1:9200]
-	-z --zabbix-host <zhost>      Hostname or IP address of zabbix server [default: 127.0.0.1]
-	-p --zabbix-port <zport>      Port of zabbix server [default: 10051]
-	--zabbix-prefix <prefix>      Add part of your prefix for key [default: None_pfx]
-	--discovery                   Run low-level discovery for determine gc collectors, mem pools, boofer pools, etc.
-	--agg-group <group>           Group name which will be use for aggregate item values.[default: None]
-	-h --help                     Show this screen.
+  --type <type>                 Type of statistics: global (cluster and nodes)
+                                  or indices [default: global].
+  -e --elasticsearch <dsn>      DSN of Elasticsearch server
+                                  [default: 127.0.0.1:9200].
+  --agg-group <group>           Group name which will be use for aggregate
+                                  item values [default: None].
+
+Stats options:
+  -z --zabbix <zabbix>          Hostname or IP address of zabbix server
+                                  [default: 127.0.0.1].
+  -p --port <port>              Port of zabbix server [default: 10051]
+  --prefix <prefix>             Add part of your prefix for key
+                                  [default: None_pfx].
+
+Discovery options:
+  --discovery                   Run low-level discovery for determine
+                                  gc collectors, mem pools, boofer pools, etc.
+
+Misc options:
+  --version                     Show version.
+  -h --help                     Show this screen.
 `
+
 	args, _ := docopt.Parse(usage, nil, true, version, false)
+
 	elasticDSN := args["--elasticsearch"].(string)
 
 	aggGroup := args["--agg-group"].(string)
 
-	zabbixHost := args["--zabbix-host"].(string)
-	zabbixPort, err := strconv.Atoi(args["--zabbix-port"].(string))
+	zabbix := args["--zabbix"].(string)
+	port, err := strconv.Atoi(args["--port"].(string))
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
 
-	zabbixPrefix := args["--zabbix-prefix"].(string)
-	if zabbixPrefix != "None_pfx" {
-		zabbixPrefix = strings.Join([]string{zabbixPrefix, "elasticsearch"}, ".")
+	prefix := args["--prefix"].(string)
+	if prefix != "None_pfx" {
+		prefix = strings.Join([]string{prefix, "elasticsearch"}, ".")
 	} else {
-		zabbixPrefix = "elasticsearch"
-	}
-
-	clusterHealth, err := getClusterHealth(elasticDSN)
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
-	}
-
-	nodesStats, err := getNodeStats(elasticDSN)
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+		prefix = "elasticsearch"
 	}
 
 	hostname, err := os.Hostname()
@@ -68,33 +73,80 @@ Options:
 
 	var metrics []*zsend.Metric
 
-	if args["--discovery"].(bool) {
-		err = discovery(nodesStats, aggGroup)
+	statsType := args["--type"].(string)
+
+	switch statsType {
+	case "indices":
+		if aggGroup == "None" {
+			fmt.Println("indices work only master node with --agg-group set")
+			os.Exit(0)
+		}
+
+		indicesStats, err := getIndicesStats(elasticDSN)
 		if err != nil {
 			fmt.Println(err.Error())
 			os.Exit(1)
 		}
+
+		if args["--discovery"].(bool) {
+			err = discoveryIndices(indicesStats)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+			os.Exit(0)
+		}
+
+		metrics = createIndicesStats(
+			hostname,
+			indicesStats,
+			metrics,
+			prefix,
+		)
+	case "global":
+		clusterHealth, err := getClusterHealth(elasticDSN)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+
+		nodesStats, err := getNodeStats(elasticDSN)
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
+
+		if args["--discovery"].(bool) {
+			err = discovery(nodesStats, aggGroup)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+			os.Exit(0)
+		}
+
+		metrics = createClusterHealthMetrics(
+			hostname,
+			clusterHealth,
+			metrics,
+			prefix,
+		)
+		metrics = createNodeStatsJVMMetrics(
+			hostname,
+			nodesStats,
+			metrics,
+			prefix,
+		)
+	default:
+		fmt.Println("Unsupported type of stats.")
 		os.Exit(0)
 	}
-
-	metrics = createClusterHealthMetrics(
-		hostname,
-		clusterHealth,
-		metrics,
-		zabbixPrefix,
-	)
-	metrics = createNodeStatsJVMMetrics(
-		hostname,
-		nodesStats,
-		metrics,
-		zabbixPrefix,
-	)
-
 	packet := zsend.NewPacket(metrics)
 	sender := zsend.NewSender(
-		zabbixHost,
-		zabbixPort,
+		zabbix,
+		port,
 	)
 	sender.Send(packet)
+
 	fmt.Println("OK")
 }
