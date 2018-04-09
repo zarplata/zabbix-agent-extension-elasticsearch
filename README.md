@@ -33,6 +33,12 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-health.h
 - [x] timed_out
 - [x] number_of_nodes
 - [x] number_of_data_nodes
+- [x] total indices docs count
+- [x] total indices deleted docs count
+- [x] primary indices docs count
+- [x] primary indices deleted docs count
+- [x] total indices store size
+- [x] primary indices store size
 - [x] active_primary_shards
 - [x] active_shards
 - [x] relocating_shards

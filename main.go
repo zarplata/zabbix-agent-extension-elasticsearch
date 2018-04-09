@@ -5,16 +5,13 @@ import (
 	"os"
 	"strconv"
 	"strings"
-	"time"
 
 	zsend "github.com/blacked/go-zabbix"
 	docopt "github.com/docopt/docopt-go"
-	lorg "github.com/kovetskiy/lorg"
 )
 
 var (
 	version = "[manual build]"
-	logger  *lorg.Log
 	err     error
 )
 
@@ -44,19 +41,13 @@ Discovery options:
                                   gc collectors, mem pools, boofer pools, etc.
 
 Misc options:
-  -v --verbose                  Print verbose messages.
   --version                     Show version.
   -h --help                     Show this screen.
 `
 
-	start := time.Now()
-
 	args, _ := docopt.Parse(usage, nil, true, version, false)
 
-	mustSetupLogger(args["--verbose"].(bool))
-
 	elasticDSN := args["--elasticsearch"].(string)
-	logger.Debugf("set elasticsearch dsn %s", elasticDSN)
 
 	aggGroup := args["--agg-group"].(string)
 
@@ -91,7 +82,6 @@ Misc options:
 			os.Exit(0)
 		}
 
-		logger.Debug("try get indices stats")
 		indicesStats, err := getIndicesStats(elasticDSN)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -99,7 +89,6 @@ Misc options:
 		}
 
 		if args["--discovery"].(bool) {
-			logger.Debug("discovery indices")
 			err = discoveryIndices(indicesStats)
 			if err != nil {
 				fmt.Println(err.Error())
@@ -108,7 +97,6 @@ Misc options:
 			os.Exit(0)
 		}
 
-		logger.Debug("create metrics from indices stats")
 		metrics = createIndicesStats(
 			hostname,
 			indicesStats,
@@ -116,14 +104,12 @@ Misc options:
 			prefix,
 		)
 	case "global":
-		logger.Debug("try get cluster health")
 		clusterHealth, err := getClusterHealth(elasticDSN)
 		if err != nil {
 			fmt.Println(err.Error())
 			os.Exit(1)
 		}
 
-		logger.Debug("try get node stats")
 		nodesStats, err := getNodeStats(elasticDSN)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -131,7 +117,6 @@ Misc options:
 		}
 
 		if args["--discovery"].(bool) {
-			logger.Debug("discovery node stats")
 			err = discovery(nodesStats, aggGroup)
 			if err != nil {
 				fmt.Println(err.Error())
@@ -140,14 +125,12 @@ Misc options:
 			os.Exit(0)
 		}
 
-		logger.Debug("create metrics from cluster health stats")
 		metrics = createClusterHealthMetrics(
 			hostname,
 			clusterHealth,
 			metrics,
 			prefix,
 		)
-		logger.Debug("create metrics from node stats")
 		metrics = createNodeStatsJVMMetrics(
 			hostname,
 			nodesStats,
@@ -163,11 +146,7 @@ Misc options:
 		zabbix,
 		port,
 	)
-	logger.Debugf("send metrics to zabbix %s:%d", zabbix, port)
 	sender.Send(packet)
-
-	elapsed := time.Since(start)
-	logger.Debugf("execution time %s", elapsed)
 
 	fmt.Println("OK")
 }
