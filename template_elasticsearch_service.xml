@@ -4,13 +4,13 @@
     <date>2018-05-22T04:25:04Z</date>
     <groups>
         <group>
-            <name>Templates/Used</name>
+            <name>Templates</name>
         </group>
     </groups>
     <templates>
         <template>
-            <template>Template App Elasticsearch Service Github</template>
-            <name>Template App Elasticsearch Service Github</name>
+            <template>Template App Elasticsearch Service</template>
+            <name>Template App Elasticsearch Service</name>
             <description/>
             <groups>
                 <group>
@@ -2026,7 +2026,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template App Elasticsearch Service Github:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.active_shards_percent&quot;,last,0].last()}&lt;100</expression>
+                            <expression>{Template App Elasticsearch Service:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.active_shards_percent&quot;,last,0].last()}&lt;100</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Cluster active shards percent {ITEM.LASTVALUE1}</name>
@@ -2042,7 +2042,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Elasticsearch Service Github:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.delayed_unassigned_shards&quot;,last,0].last()}&gt;0</expression>
+                            <expression>{Template App Elasticsearch Service:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.delayed_unassigned_shards&quot;,last,0].last()}&gt;0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Cluster delayed unassigned shards {ITEM.LASTVALUE1}</name>
@@ -2058,7 +2058,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Elasticsearch Service Github:grpmax[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.status_int&quot;,last,0].last()}=2</expression>
+                            <expression>{Template App Elasticsearch Service:grpmax[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.status_int&quot;,last,0].last()}=2</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Cluster health red</name>
@@ -2074,7 +2074,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Elasticsearch Service Github:grpmax[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.status_int&quot;,last,0].last()}=1</expression>
+                            <expression>{Template App Elasticsearch Service:grpmax[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.status_int&quot;,last,0].last()}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Cluster health yellow</name>
@@ -2090,7 +2090,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Elasticsearch Service Github:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.relocating_shards&quot;,last,0].last()}&gt;0</expression>
+                            <expression>{Template App Elasticsearch Service:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.relocating_shards&quot;,last,0].last()}&gt;0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Cluster relocating shards {ITEM.LASTVALUE1}</name>
@@ -2106,7 +2106,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template App Elasticsearch Service Github:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.unassigned_shards&quot;,last,0].last()}&gt;0</expression>
+                            <expression>{Template App Elasticsearch Service:grpavg[&quot;{#GROUPNAME}&quot;, &quot;elasticsearch.cluster_health.unassigned_shards&quot;,last,0].last()}&gt;0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Cluster unassigned shards {ITEM.LASTVALUE1}</name>
@@ -2455,7 +2455,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>({Template App Elasticsearch Service Github:elasticsearch.indices_stats.primaries.docs.count.[{#INDEX}].forecast(4h,,4h)}/{Template App Elasticsearch Service Github:elasticsearch.indices_stats.primaries.docs.count.[{#INDEX}].last()})&gt;5</expression>
+                            <expression>({Template App Elasticsearch Service:elasticsearch.indices_stats.primaries.docs.count.[{#INDEX}].forecast(4h,,4h)}/{Template App Elasticsearch Service:elasticsearch.indices_stats.primaries.docs.count.[{#INDEX}].last()})&gt;5</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Index {#INDEX} docs count increase fast!</name>
@@ -2501,7 +2501,7 @@
     </templates>
     <triggers>
         <trigger>
-            <expression>{Template App Elasticsearch Service Github:elasticsearch.stats[{$ZABBIX_SERVER_IP},{$ES_ZBX_PREFIX}].regexp(&quot;^OK&quot;)}=0</expression>
+            <expression>{Template App Elasticsearch Service:elasticsearch.stats[{$ZABBIX_SERVER_IP},{$ES_ZBX_PREFIX}].regexp(&quot;^OK&quot;)}=0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Elasticsearch cannot get stats</name>
@@ -2517,7 +2517,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template App Elasticsearch Service Github:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;80</expression>
+            <expression>{Template App Elasticsearch Service:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;80</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Elasticsearch jvm mem heap used percent {ITEM.LASTVALUE1}</name>
@@ -2532,14 +2532,14 @@
             <dependencies>
                 <dependency>
                     <name>Elasticsearch jvm mem heap used percent {ITEM.LASTVALUE1}</name>
-                    <expression>{Template App Elasticsearch Service Github:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;90</expression>
+                    <expression>{Template App Elasticsearch Service:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;90</expression>
                     <recovery_expression/>
                 </dependency>
             </dependencies>
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template App Elasticsearch Service Github:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;90</expression>
+            <expression>{Template App Elasticsearch Service:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;90</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Elasticsearch jvm mem heap used percent {ITEM.LASTVALUE1}</name>
@@ -2555,7 +2555,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template App Elasticsearch Service Github:net.tcp.service[tcp,,{$ES_PORT}].max(#3)}=0 and {Template App Elasticsearch Service Github:proc.num[,,,bootstrap.Elasticsearch].max(#3)}=0</expression>
+            <expression>{Template App Elasticsearch Service:net.tcp.service[tcp,,{$ES_PORT}].max(#3)}=0 and {Template App Elasticsearch Service:proc.num[,,,bootstrap.Elasticsearch].max(#3)}=0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Elasticsearch process is NOT running</name>
