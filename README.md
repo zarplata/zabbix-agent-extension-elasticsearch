@@ -17,7 +17,7 @@ _This version supports only JVM stats, because now we are only interested in thi
 - [ ] os
 - [ ] processes
 - [x] jvm
-- [ ] thread_pool
+- [x] thread_pool
 - [ ] fs
 - [ ] transport
 - [ ] http
