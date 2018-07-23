@@ -1,11 +1,11 @@
 post_install() {
-    systemctl restart zabbix-agentd
+    systemctl restart zabbix-agent
 }
 
 post_upgrade() {
-    systemctl restart zabbix-agentd
+    systemctl restart zabbix-agent
 }
 
 post_remove() {
-    systemctl restart zabbix-agentd
+    systemctl restart zabbix-agent
 }

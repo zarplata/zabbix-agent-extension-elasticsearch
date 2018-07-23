@@ -2,7 +2,7 @@
 # Contributor: Andrey Platonov <a.platonov@zarplata.ru>
 
 pkgname=zabbix-agent-extension-elasticsearch
-pkgver=20170630.3_52d780d
+pkgver=20180723.22_75f1391
 pkgrel=1
 pkgdesc="Extension for zabbix-agentd for monitoring Elasticsearch service"
 arch=('any')
@@ -15,14 +15,6 @@ md5sums=(
     'SKIP'
     )
 
-make_zabbix_config() {
-    userparam_string_discovery="UserParameter=elasticsearch.discovery[*], /usr/bin/${pkgname} --discovery --agg-group \$1"
-    userparam_string="UserParameter=elasticsearch.stats[*], /usr/bin/${pkgname} --zabbix-host \$1 --zabbix-prefix \$2"
-
-    echo "$userparam_string_discovery" > "$pkgname.conf"
-    echo "$userparam_string" >> "$pkgname.conf"
-}
-
 
 pkgver() {
 	cd "$pkgname"
@@ -31,8 +23,6 @@ pkgver() {
 }
 
 build() {
-    make_zabbix_config
-
     cd "$srcdir/$pkgname"
     make 
 }
@@ -42,6 +32,6 @@ package() {
     ZBX_INC_DIR=/etc/zabbix/zabbix_agentd.conf.d/
 
     install -Dm 0755 .out/"${pkgname}" "${pkgdir}/usr/bin/${pkgname}"
-    install -Dm 0644 ../"${pkgname}.conf" "${pkgdir}${ZBX_INC_DIR}${pkgname}.conf"
+    install -Dm 0644 "${pkgname}.conf" "${pkgdir}${ZBX_INC_DIR}${pkgname}.conf"
     
 }
