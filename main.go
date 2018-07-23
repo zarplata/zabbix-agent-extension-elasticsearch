@@ -137,6 +137,14 @@ Misc options:
 			metrics,
 			prefix,
 		)
+
+		metrics = createNodeStatsThreadPool(
+			hostname,
+			nodesStats,
+			metrics,
+			prefix,
+		)
+
 	default:
 		fmt.Println("Unsupported type of stats.")
 		os.Exit(0)

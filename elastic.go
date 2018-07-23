@@ -31,7 +31,8 @@ type ElasticNodesStats struct {
 }
 
 type ElasticNodeStats struct {
-	JVM ElasticNodeStatsJVM `json:"jvm"`
+	JVM         ElasticNodeStatsJVM       `json:"jvm"`
+	ThreadPools map[string]NodeThreadPool `json:"thread_pool"`
 }
 
 type ElasticNodeStatsJVM struct {
@@ -116,7 +117,7 @@ type ElasticIndicesStatsIndex struct {
 	} `json:"docs"`
 	Store struct {
 		SizeInBytes          int64 `json:"size_in_bytes"`
-		ThrottleTimeInMillis int64 `json:'throttle_time_in_millis"`
+		ThrottleTimeInMillis int64 `json:"throttle_time_in_millis"`
 	} `json:"store"`
 }
 

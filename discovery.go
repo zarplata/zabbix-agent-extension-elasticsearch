@@ -39,6 +39,12 @@ func discovery(
 			discoveredItems = append(discoveredItems, discoveredItem)
 		}
 
+		for threadPoolName := range nodeStats.ThreadPools {
+			discoveredItem := make(map[string]string)
+			discoveredItem["{#THREADPOOLNAME}"] = threadPoolName
+			discoveredItems = append(discoveredItems, discoveredItem)
+		}
+
 	}
 
 	discoveryData["data"] = discoveredItems
