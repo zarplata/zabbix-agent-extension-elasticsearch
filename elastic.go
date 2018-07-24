@@ -33,6 +33,7 @@ type ElasticNodesStats struct {
 type ElasticNodeStats struct {
 	JVM         ElasticNodeStatsJVM       `json:"jvm"`
 	ThreadPools map[string]NodeThreadPool `json:"thread_pool"`
+	Indices     NodeIndices               `json:"indices"`
 }
 
 type ElasticNodeStatsJVM struct {

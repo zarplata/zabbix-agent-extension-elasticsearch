@@ -145,6 +145,13 @@ Misc options:
 			prefix,
 		)
 
+		metrics = createNodeStatsIndices(
+			hostname,
+			nodesStats,
+			metrics,
+			prefix,
+		)
+
 	default:
 		fmt.Println("Unsupported type of stats.")
 		os.Exit(0)
