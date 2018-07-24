@@ -103,6 +103,7 @@ Misc options:
 			metrics,
 			prefix,
 		)
+
 	case "global":
 		clusterHealth, err := getClusterHealth(elasticDSN)
 		if err != nil {
@@ -156,6 +157,7 @@ Misc options:
 		fmt.Println("Unsupported type of stats.")
 		os.Exit(0)
 	}
+
 	packet := zsend.NewPacket(metrics)
 	sender := zsend.NewSender(
 		zabbix,
