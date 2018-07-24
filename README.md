@@ -13,7 +13,7 @@ _This version supports only JVM stats, because now we are only interested in thi
 
 - [ ] roles
 - [ ] attributes
-- [ ] indices
+- [x] indices (partly)
 - [ ] os
 - [ ] processes
 - [x] jvm
@@ -73,7 +73,7 @@ make install
 git clone https://github.com/zarplata/zabbix-agent-extension-elasticsearch.git
 git checkout pkgbuild
 
-makepkg
+./build.sh
 
 #Installing
 pacman -U *.tar.xz
