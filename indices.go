@@ -18,10 +18,11 @@ type NodeIndices struct {
 		ThrottleTimeInMillis int64 `json:"throttle_time_in_millis"`
 	} `json:"store"`
 
-	Indexing IndicesIndexingStats `json:"indexing"`
-	Get      IndicesGetStats      `json:"get"`
-	Search   IndicesSearchStats   `json:"search"`
-	Merges   IndicesMergesStats   `json:"merges"`
+	Indexing   IndicesIndexingStats `json:"indexing"`
+	Get        IndicesGetStats      `json:"get"`
+	Search     IndicesSearchStats   `json:"search"`
+	Merges     IndicesMergesStats   `json:"merges"`
+	QueryCache IndicesQueryCache    `json:"query_cache"`
 }
 
 // IndicesIndexingStats - indices indexing stats
@@ -49,6 +50,7 @@ type IndicesGetStats struct {
 	Current             int64 `json:"current"`
 }
 
+// IndicesSearchStats - indices search stats
 type IndicesSearchStats struct {
 	OpenContexts        int64 `json:"open_contexts"`
 	QueryTotal          int64 `json:"query_total"`
@@ -65,6 +67,7 @@ type IndicesSearchStats struct {
 	SuggestCurrent      int64 `json:"suggest_current"`
 }
 
+// IndicesMergesStats - indices merge stats
 type IndicesMergesStats struct {
 	Current                    int64 `json:"current"`
 	CurrentDocs                int64 `json:"current_docs"`
@@ -76,6 +79,16 @@ type IndicesMergesStats struct {
 	TotalStoppedTimeInMillis   int64 `json:"total_stopped_time_in_millis"`
 	TotalThrottledTimeInMillis int64 `json:"total_throttled_time_in_millis"`
 	TotalAutoThrottleInBytes   int64 `json:"total_auto_throttle_in_bytes"`
+}
+
+type IndicesQueryCache struct {
+	MemorySizeInBytes int64 `json:"memory_size_in_bytes"`
+	TotalCount        int64 `json:"total_count"`
+	HitCount          int64 `json:"hit_count"`
+	MissCount         int64 `json:"miss_count"`
+	CacheSize         int64 `json:"cache_size"`
+	CacheCount        int64 `json:"cache_count"`
+	Evictions         int64 `json:"evictions"`
 }
 
 func createNodeStatsIndices(
@@ -148,6 +161,13 @@ func createNodeStatsIndices(
 	)
 
 	metrics = createNodeStatsIndicesSearch(
+		hostname,
+		&nodeStats,
+		metrics,
+		prefix,
+	)
+
+	metrics = createNodeStatsIndicesQueryCache(
 		hostname,
 		&nodeStats,
 		metrics,
@@ -447,6 +467,100 @@ func createNodeStatsIndicesSearch(
 				"node_stats.indices.search.suggest_current",
 			),
 			strconv.Itoa(int(nodeStats.Indices.Search.SuggestCurrent)),
+		),
+	)
+
+	return metrics
+}
+
+func createNodeStatsIndicesQueryCache(
+	hostname string,
+	nodeStats *ElasticNodeStats,
+	metrics []*zsend.Metric,
+	prefix string,
+) []*zsend.Metric {
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.query_cache.memory_size_in_bytes",
+			),
+			strconv.Itoa(int(nodeStats.Indices.QueryCache.MemorySizeInBytes)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.query_cache.total_count",
+			),
+			strconv.Itoa(int(nodeStats.Indices.QueryCache.TotalCount)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.query_cache.hit_count",
+			),
+			strconv.Itoa(int(nodeStats.Indices.QueryCache.HitCount)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.query_cache.miss_count",
+			),
+			strconv.Itoa(int(nodeStats.Indices.QueryCache.MissCount)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.search.cache_size",
+			),
+			strconv.Itoa(int(nodeStats.Indices.QueryCache.CacheSize)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.query_cache.cache_count",
+			),
+			strconv.Itoa(int(nodeStats.Indices.QueryCache.CacheCount)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.query_cache.evictions",
+			),
+			strconv.Itoa(int(nodeStats.Indices.QueryCache.Evictions)),
 		),
 	)
 
