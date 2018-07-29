@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"fmt"
 	"os"
 	"strconv"
@@ -8,6 +9,10 @@ import (
 
 	zsend "github.com/blacked/go-zabbix"
 	docopt "github.com/docopt/docopt-go"
+)
+
+const (
+	noneValue = "None"
 )
 
 var (
@@ -19,7 +24,7 @@ func main() {
 	usage := `zabbix-agent-extension-elasticsearch
 
 Usage:
-  zabbix-agent-extension-elastic [options]
+  zabbix-agent-extension-elasticsearch [options]
 
 Options:
   --type <type>                 Type of statistics: global (cluster and nodes)
@@ -28,6 +33,9 @@ Options:
                                   [default: 127.0.0.1:9200].
   --agg-group <group>           Group name which will be use for aggregate
                                   item values [default: None].
+  -u --user <name>              User for authenticate through 
+                                  Elasticsearch API [default: None].
+  -x --password <string>        Password for user [default: None].
 
 Stats options:
   -z --zabbix <zabbix>          Hostname or IP address of zabbix server
@@ -65,6 +73,23 @@ Misc options:
 		prefix = "elasticsearch"
 	}
 
+	elasticsearchAuthToken := noneValue
+
+	elasticsearchUser := args["--user"].(string)
+	elasticsearchPassword := args["--password"].(string)
+
+	if elasticsearchUser != noneValue && elasticsearchPassword != noneValue {
+		elasticsearchAuthToken = base64.StdEncoding.EncodeToString(
+			[]byte(
+				fmt.Sprintf(
+					"%s:%s",
+					elasticsearchUser,
+					elasticsearchPassword,
+				),
+			),
+		)
+	}
+
 	hostname, err := os.Hostname()
 	if err != nil {
 		fmt.Println(err.Error())
@@ -82,7 +107,10 @@ Misc options:
 			os.Exit(0)
 		}
 
-		indicesStats, err := getIndicesStats(elasticDSN)
+		indicesStats, err := getIndicesStats(
+			elasticDSN,
+			elasticsearchAuthToken,
+		)
 		if err != nil {
 			fmt.Println(err.Error())
 			os.Exit(1)
@@ -105,13 +133,19 @@ Misc options:
 		)
 
 	case "global":
-		clusterHealth, err := getClusterHealth(elasticDSN)
+		clusterHealth, err := getClusterHealth(
+			elasticDSN,
+			elasticsearchAuthToken,
+		)
 		if err != nil {
 			fmt.Println(err.Error())
 			os.Exit(1)
 		}
 
-		nodesStats, err := getNodeStats(elasticDSN)
+		nodesStats, err := getNodeStats(
+			elasticDSN,
+			elasticsearchAuthToken,
+		)
 		if err != nil {
 			fmt.Println(err.Error())
 			os.Exit(1)

@@ -124,12 +124,28 @@ type ElasticIndicesStatsIndex struct {
 
 func getClusterHealth(
 	elasticDSN string,
+	elasticsearchAuthToken string,
 ) (*ElasticClusterHealth, error) {
+
+	client := &http.Client{}
 
 	var elasticClusterHealth ElasticClusterHealth
 
 	clutserHealthURL := fmt.Sprintf("http://%s/_cluster/health", elasticDSN)
-	clusterHealthResponse, err := http.Get(clutserHealthURL)
+	request, err := http.NewRequest("GET", clutserHealthURL, nil)
+	if err != nil {
+		return nil, hierr.Errorf(
+			err,
+			"can`t create new HTTP request to %s",
+			elasticDSN,
+		)
+	}
+
+	if elasticsearchAuthToken != noneValue {
+		request.Header.Add("Authorization", "Basic "+elasticsearchAuthToken)
+	}
+
+	clusterHealthResponse, err := client.Do(request)
 	if err != nil {
 		return nil, hierr.Errorf(
 			err.Error(),
@@ -162,12 +178,28 @@ func getClusterHealth(
 
 func getNodeStats(
 	elasticDSN string,
+	elasticsearchAuthToken string,
 ) (*ElasticNodesStats, error) {
+
+	client := &http.Client{}
 
 	var elasticNodesStats ElasticNodesStats
 
 	nodeStatsURL := fmt.Sprintf("http://%s/_nodes/_local/stats", elasticDSN)
-	nodeStatsResponse, err := http.Get(nodeStatsURL)
+	request, err := http.NewRequest("GET", nodeStatsURL, nil)
+	if err != nil {
+		return nil, hierr.Errorf(
+			err,
+			"can`t create new HTTP request to %s",
+			elasticDSN,
+		)
+	}
+
+	if elasticsearchAuthToken != noneValue {
+		request.Header.Add("Authorization", "Basic "+elasticsearchAuthToken)
+	}
+
+	nodeStatsResponse, err := client.Do(request)
 	if err != nil {
 		return nil, hierr.Errorf(
 			err.Error(),
@@ -180,7 +212,7 @@ func getNodeStats(
 
 	if nodeStatsResponse.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf(
-			"can`t get node stats, Elasticsearch node returned %d HTTP code, expected %d HTTP code",
+			"can`t get node stats, Elasticsearch node returned %d HTTP code",
 			nodeStatsResponse.StatusCode,
 			http.StatusOK,
 		)
@@ -198,12 +230,30 @@ func getNodeStats(
 	return &elasticNodesStats, nil
 }
 
-func getIndicesStats(elasticDSN string) (*ElasticIndicesStats, error) {
+func getIndicesStats(
+	elasticDSN string,
+	elasticsearchAuthToken string,
+) (*ElasticIndicesStats, error) {
+
+	client := &http.Client{}
 
 	var elasticIndicesStats ElasticIndicesStats
 
 	indicesStatsURL := fmt.Sprintf("http://%s/_stats", elasticDSN)
-	indicesStatsResponse, err := http.Get(indicesStatsURL)
+	request, err := http.NewRequest("GET", indicesStatsURL, nil)
+	if err != nil {
+		return nil, hierr.Errorf(
+			err,
+			"can`t create new HTTP request to %s",
+			elasticDSN,
+		)
+	}
+
+	if elasticsearchAuthToken != noneValue {
+		request.Header.Add("Authorization", "Basic "+elasticsearchAuthToken)
+	}
+
+	indicesStatsResponse, err := client.Do(request)
 	if err != nil {
 		return nil, hierr.Errorf(
 			err.Error(),
