@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-07-29T15:33:48Z</date>
+    <date>2018-07-29T16:10:36Z</date>
     <groups>
         <group>
             <name>Templates/Used</name>
@@ -711,7 +711,7 @@
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>elasticsearch.indices.stats[{$ZABBIX_SERVER_IP},{$ES_ZBX_PREFIX},{$GROUPNAME}]</key>
+                    <key>elasticsearch.indices.stats[{$ZABBIX_SERVER_IP},{$ES_ZBX_PREFIX},{$GROUPNAME},{$ES_USER},{$ES_PASSWORD}]</key>
                     <delay>60</delay>
                     <history>90d</history>
                     <trends>0</trends>
@@ -1776,7 +1776,7 @@
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>elasticsearch.stats[{$ZABBIX_SERVER_IP},{$ES_ZBX_PREFIX}]</key>
+                    <key>elasticsearch.stats[{$ZABBIX_SERVER_IP},{$ES_ZBX_PREFIX},{$ES_USER},{$ES_PASSWORD}]</key>
                     <delay>30</delay>
                     <history>90d</history>
                     <trends>0</trends>
@@ -1942,7 +1942,7 @@
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>elasticsearch.discovery[{$GROUPNAME}]</key>
+                    <key>elasticsearch.discovery[{$GROUPNAME},{$ES_USER},{$ES_PASSWORD}]</key>
                     <delay>5m</delay>
                     <status>0</status>
                     <allowed_hosts/>
@@ -2932,7 +2932,7 @@
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>elasticsearch.indices.discovery[{$GROUPNAME}]</key>
+                    <key>elasticsearch.indices.discovery[{$GROUPNAME},{$ES_USER},{$ES_PASSWORD}]</key>
                     <delay>5m</delay>
                     <status>0</status>
                     <allowed_hosts/>
@@ -3280,8 +3280,16 @@
             <httptests/>
             <macros>
                 <macro>
+                    <macro>{$ES_PASSWORD}</macro>
+                    <value>None</value>
+                </macro>
+                <macro>
                     <macro>{$ES_PORT}</macro>
                     <value>9200</value>
+                </macro>
+                <macro>
+                    <macro>{$ES_USER}</macro>
+                    <value>None</value>
                 </macro>
                 <macro>
                     <macro>{$ES_ZBX_PREFIX}</macro>
@@ -3302,7 +3310,7 @@
     </templates>
     <triggers>
         <trigger>
-            <expression>{Template App Elasticsearch Service:elasticsearch.stats[{$ZABBIX_SERVER_IP},{$ES_ZBX_PREFIX}].regexp(&quot;^OK&quot;)}=0</expression>
+            <expression>{Template App Elasticsearch Service:elasticsearch.stats[{$ZABBIX_SERVER_IP},{$ES_ZBX_PREFIX},{$ES_USER},{$ES_PASSWORD}].regexp(&quot;^OK&quot;)}=0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Elasticsearch cannot get stats</name>
