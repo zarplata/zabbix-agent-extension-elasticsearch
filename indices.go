@@ -177,6 +177,27 @@ func createNodeStatsIndices(
 	return metrics
 }
 
+func calculateOpLatency(
+	totalSpentTimeInMillis int64,
+	totalOperations int64,
+) string {
+	var operationTime float64
+
+	if totalOperations == 0 {
+		return strconv.FormatFloat(
+			float64(totalOperations),
+			'f',
+			8,
+			64,
+		)
+	}
+
+	totalSpentTimeInSeconds := float64(totalSpentTimeInMillis) / 1000
+	operationTime = totalSpentTimeInSeconds / float64(totalOperations)
+
+	return strconv.FormatFloat(operationTime, 'f', 8, 64)
+}
+
 func createNodeStatsIndicesIndexing(
 	hostname string,
 	nodeStats *ElasticNodeStats,
@@ -205,6 +226,21 @@ func createNodeStatsIndicesIndexing(
 				"node_stats.indices.indexing.index_time_in_millis",
 			),
 			strconv.Itoa(int(nodeStats.Indices.Indexing.IndexTimeInMillis)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.indexing.index_latency",
+			),
+			calculateOpLatency(
+				nodeStats.Indices.Indexing.IndexTimeInMillis,
+				nodeStats.Indices.Indexing.IndexTotal,
+			),
 		),
 	)
 
@@ -253,6 +289,21 @@ func createNodeStatsIndicesIndexing(
 				"node_stats.indices.indexing.delete_time_in_millis",
 			),
 			strconv.Itoa(int(nodeStats.Indices.Indexing.DeleteTimeInMillis)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.indexing.delete_latency",
+			),
+			calculateOpLatency(
+				nodeStats.Indices.Indexing.DeleteTimeInMillis,
+				nodeStats.Indices.Indexing.DeleteTotal,
+			),
 		),
 	)
 
@@ -356,6 +407,21 @@ func createNodeStatsIndicesSearch(
 			hostname,
 			makePrefix(
 				prefix,
+				"node_stats.indices.search.query_latency",
+			),
+			calculateOpLatency(
+				nodeStats.Indices.Search.QueryTimeInMillis,
+				nodeStats.Indices.Search.QueryTotal,
+			),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
 				"node_stats.indices.search.query_current",
 			),
 			strconv.Itoa(int(nodeStats.Indices.Search.QueryCurrent)),
@@ -392,6 +458,21 @@ func createNodeStatsIndicesSearch(
 			hostname,
 			makePrefix(
 				prefix,
+				"node_stats.indices.search.fetch_latency",
+			),
+			calculateOpLatency(
+				nodeStats.Indices.Search.FetchTimeInMillis,
+				nodeStats.Indices.Search.FetchTotal,
+			),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
 				"node_stats.indices.search.fetch_current",
 			),
 			strconv.Itoa(int(nodeStats.Indices.Search.FetchCurrent)),
@@ -419,6 +500,21 @@ func createNodeStatsIndicesSearch(
 				"node_stats.indices.search.scroll_time_in_millis",
 			),
 			strconv.Itoa(int(nodeStats.Indices.Search.ScrollTimeInMillis)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.search.scroll_latency",
+			),
+			calculateOpLatency(
+				nodeStats.Indices.Search.ScrollTimeInMillis,
+				nodeStats.Indices.Search.ScrollTotal,
+			),
 		),
 	)
 
@@ -467,6 +563,21 @@ func createNodeStatsIndicesSearch(
 				"node_stats.indices.search.suggest_current",
 			),
 			strconv.Itoa(int(nodeStats.Indices.Search.SuggestCurrent)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.search.suggest_latency",
+			),
+			calculateOpLatency(
+				nodeStats.Indices.Search.SuggestTimeInMillis,
+				nodeStats.Indices.Search.SuggestTotal,
+			),
 		),
 	)
 
@@ -525,6 +636,27 @@ func createNodeStatsIndicesQueryCache(
 				"node_stats.indices.query_cache.miss_count",
 			),
 			strconv.Itoa(int(nodeStats.Indices.QueryCache.MissCount)),
+		),
+	)
+
+	queryCacheEfficiency := float64(
+		nodeStats.Indices.QueryCache.HitCount,
+	) * float64(100) / float64(nodeStats.Indices.QueryCache.TotalCount)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.query_cache.efficiency",
+			),
+			strconv.FormatFloat(
+				queryCacheEfficiency,
+				'f',
+				2,
+				64,
+			),
 		),
 	)
 
