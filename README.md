@@ -9,8 +9,6 @@ This extension obtains stats of two types:
 #### Node stat
 https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-nodes-stats.html
 
-_This version supports only JVM stats, because now we are only interested in this metric._
-
 - [ ] roles
 - [ ] attributes
 - [x] indices (partly)
@@ -99,6 +97,10 @@ If you need change key `elasticsearch.*` -> `YOUR_PREFIX_PART.elasticsearch.*`, 
 ```sh
 ./custom_key_template.sh YOUR_PREFIX_PART
 ```
+
+### Elasticsearch API authentication (X-Pack security)
+
+This extension support basic authentication which provided by X-Pack. For authentication in Elasticsearch you must set valid values in template macros - `${ES_USER}` and `${ES_PASSWORD}`
 
 ### Customize Elasticsearch ip/port, zabbix-server port
 
