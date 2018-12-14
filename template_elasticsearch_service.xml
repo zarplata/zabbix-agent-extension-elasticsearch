@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.4</version>
-    <date>2018-09-18T11:44:24Z</date>
+    <date>2018-12-14T05:14:04Z</date>
     <groups>
         <group>
             <name>Templates/Used</name>
@@ -20,6 +20,12 @@
             <applications>
                 <application>
                     <name>Elasticsearch</name>
+                </application>
+                <application>
+                    <name>Elasticsearch.Http</name>
+                </application>
+                <application>
+                    <name>Elasticsearch.Transport</name>
                 </application>
                 <application>
                     <name>ES.Index</name>
@@ -744,6 +750,93 @@
                     <valuemap/>
                     <logtimefmt/>
                     <preprocessing/>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Elasticsearch http current open</name>
+                    <type>2</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>elasticsearch.node_stats.http.current_open</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Elasticsearch.Http</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing/>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Elasticsearch http total opened</name>
+                    <type>2</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>elasticsearch.node_stats.http.total_opened</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Elasticsearch.Http</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing>
+                        <step>
+                            <type>9</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
                     <jmx_endpoint/>
                     <master_item/>
                 </item>
@@ -1977,6 +2070,231 @@
                     <master_item/>
                 </item>
                 <item>
+                    <name>Elasticsearch transport RX count</name>
+                    <type>2</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>elasticsearch.node_stats.transport.rx_count</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Elasticsearch.Transport</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Elasticsearch transport RX bytes</name>
+                    <type>2</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>elasticsearch.node_stats.transport.rx_size_in_bytes</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units>bps</units>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Elasticsearch.Transport</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Elasticsearch transport server open</name>
+                    <type>2</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>elasticsearch.node_stats.transport.server_open</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Elasticsearch.Transport</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing/>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Elasticsearch transport TX count</name>
+                    <type>2</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>elasticsearch.node_stats.transport.tx_count</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Elasticsearch.Transport</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
+                    <name>Elasticsearch transport TX bytes</name>
+                    <type>2</type>
+                    <snmp_community/>
+                    <snmp_oid/>
+                    <key>elasticsearch.node_stats.transport.tx_size_in_bytes</key>
+                    <delay>0</delay>
+                    <history>90d</history>
+                    <trends>365d</trends>
+                    <status>0</status>
+                    <value_type>3</value_type>
+                    <allowed_hosts/>
+                    <units>bps</units>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>Elasticsearch.Transport</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                    <preprocessing>
+                        <step>
+                            <type>10</type>
+                            <params/>
+                        </step>
+                    </preprocessing>
+                    <jmx_endpoint/>
+                    <master_item/>
+                </item>
+                <item>
                     <name>Elasticsearch get stats</name>
                     <type>0</type>
                     <snmp_community/>
@@ -2104,7 +2422,7 @@
                     <type>0</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>vfs.file.exists[/var/lib/elasticsearch/snapshots/index.latest]</key>
+                    <key>vfs.file.exists[/var/lib/elasticsearch/snapshots/.archive2_test_file]</key>
                     <delay>30</delay>
                     <history>90d</history>
                     <trends>365d</trends>
@@ -2310,7 +2628,7 @@
                             <history>90d</history>
                             <trends>365d</trends>
                             <status>0</status>
-                            <value_type>3</value_type>
+                            <value_type>0</value_type>
                             <allowed_hosts/>
                             <units/>
                             <snmpv3_contextname/>
@@ -2337,7 +2655,12 @@
                             </applications>
                             <valuemap/>
                             <logtimefmt/>
-                            <preprocessing/>
+                            <preprocessing>
+                                <step>
+                                    <type>9</type>
+                                    <params/>
+                                </step>
+                            </preprocessing>
                             <jmx_endpoint/>
                             <application_prototypes/>
                             <master_item_prototype/>
@@ -3165,48 +3488,6 @@
                     <description/>
                     <item_prototypes>
                         <item_prototype>
-                            <name>Forecast index $1 pri docs count</name>
-                            <type>15</type>
-                            <snmp_community/>
-                            <snmp_oid/>
-                            <key>elasticsearch.indices_stats.primaries.docs.count.forecast.[{#INDEX}]</key>
-                            <delay>30s</delay>
-                            <history>90d</history>
-                            <trends>365d</trends>
-                            <status>0</status>
-                            <value_type>3</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params>forecast(elasticsearch.indices_stats.primaries.docs.count.[{#INDEX}],4h,,4h)</params>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
-                            <applications>
-                                <application>
-                                    <name>ES.Index</name>
-                                </application>
-                            </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <application_prototypes/>
-                            <master_item_prototype/>
-                        </item_prototype>
-                        <item_prototype>
                             <name>Index $1 pri docs count</name>
                             <type>2</type>
                             <snmp_community/>
@@ -3459,24 +3740,7 @@
                             <master_item_prototype/>
                         </item_prototype>
                     </item_prototypes>
-                    <trigger_prototypes>
-                        <trigger_prototype>
-                            <expression>({Template App Elasticsearch Service:elasticsearch.indices_stats.primaries.docs.count.[{#INDEX}].forecast(4h,,4h)}/{Template App Elasticsearch Service:elasticsearch.indices_stats.primaries.docs.count.[{#INDEX}].last()})&gt;5</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Index {#INDEX} docs count increase fast!</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>1</status>
-                            <priority>0</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                    </trigger_prototypes>
+                    <trigger_prototypes/>
                     <graph_prototypes/>
                     <host_prototypes/>
                     <jmx_endpoint/>
@@ -3535,7 +3799,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template App Elasticsearch Service:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;80</expression>
+            <expression>{Template App Elasticsearch Service:elasticsearch.node_stats.jvm.mem.heap_used_percent.last()}&gt;85</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Elasticsearch jvm mem heap used percent {ITEM.LASTVALUE1}</name>
@@ -3589,7 +3853,7 @@
             <tags/>
         </trigger>
         <trigger>
-            <expression>{Template App Elasticsearch Service:vfs.file.exists[/var/lib/elasticsearch/snapshots/index.latest].last()}=0</expression>
+            <expression>{Template App Elasticsearch Service:vfs.file.exists[/var/lib/elasticsearch/snapshots/.archive2_test_file].last()}=0</expression>
             <recovery_mode>0</recovery_mode>
             <recovery_expression/>
             <name>Snapshot dir not mounted</name>
