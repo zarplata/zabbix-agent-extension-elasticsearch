@@ -187,6 +187,20 @@ Misc options:
 			prefix,
 		)
 
+		metrics = createNodeStatsTransport(
+			hostname,
+			nodesStats,
+			metrics,
+			prefix,
+		)
+
+		metrics = createNodeStatsHttp(
+			hostname,
+			nodesStats,
+			metrics,
+			prefix,
+		)
+
 	default:
 		fmt.Println("Unsupported type of stats.")
 		os.Exit(0)

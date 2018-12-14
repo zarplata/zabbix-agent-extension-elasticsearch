@@ -34,6 +34,8 @@ type ElasticNodeStats struct {
 	JVM         ElasticNodeStatsJVM       `json:"jvm"`
 	ThreadPools map[string]NodeThreadPool `json:"thread_pool"`
 	Indices     NodeIndices               `json:"indices"`
+	Transport   ElasticNodeStatsTransport `json:"transport"`
+	Http        ElasticNodeStatsHttp      `json:"http"`
 }
 
 type ElasticNodeStatsJVM struct {
@@ -87,6 +89,19 @@ type ElasticNodeStatsJVMClassesStats struct {
 	CurrentLoadedCount int64 `json:"current_loaded_count"`
 	TotalLoadedCount   int64 `json:"total_loaded_count"`
 	TotalUnloadedCount int64 `json:"total_unloaded_count"`
+}
+
+type ElasticNodeStatsTransport struct {
+	ServerOpen    int64 `json:"server_open"`
+	RxCount       int64 `json:"rx_count"`
+	RxSizeInBytes int64 `json:"rx_size_in_bytes"`
+	TxCount       int64 `json:"tx_count"`
+	TxSizeInBytes int64 `json:"tx_size_in_bytes"`
+}
+
+type ElasticNodeStatsHttp struct {
+	CurrentOpen int64 `json:"current_open"`
+	TotalOpened int64 `json:"total_opened"`
 }
 
 type ElasticIndicesStats struct {

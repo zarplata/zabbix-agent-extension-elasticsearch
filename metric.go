@@ -207,6 +207,109 @@ func createClusterHealthMetrics(
 	return metrics
 }
 
+func createNodeStatsTransport(
+	hostname string,
+	nodesStats *ElasticNodesStats,
+	metrics []*zsend.Metric,
+	prefix string,
+) []*zsend.Metric {
+
+	for _, nodeStats := range nodesStats.Nodes {
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					"node_stats.transport.server_open",
+				),
+				strconv.Itoa(int(nodeStats.Transport.ServerOpen)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					"node_stats.transport.rx_count",
+				),
+				strconv.Itoa(int(nodeStats.Transport.RxCount)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					"node_stats.transport.rx_size_in_bytes",
+				),
+				strconv.Itoa(int(nodeStats.Transport.RxSizeInBytes)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					"node_stats.transport.tx_count",
+				),
+				strconv.Itoa(int(nodeStats.Transport.TxCount)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					"node_stats.transport.tx_size_in_bytes",
+				),
+				strconv.Itoa(int(nodeStats.Transport.TxSizeInBytes)),
+			),
+		)
+	}
+
+	return metrics
+}
+
+func createNodeStatsHttp(
+	hostname string,
+	nodesStats *ElasticNodesStats,
+	metrics []*zsend.Metric,
+	prefix string,
+) []*zsend.Metric {
+
+	for _, nodeStats := range nodesStats.Nodes {
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					"node_stats.http.current_open",
+				),
+				strconv.Itoa(int(nodeStats.Http.CurrentOpen)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					"node_stats.http.total_opened",
+				),
+				strconv.Itoa(int(nodeStats.Http.TotalOpened)),
+			),
+		)
+	}
+
+	return metrics
+}
+
 func createNodeStatsJVMMetrics(
 	hostname string,
 	nodesStats *ElasticNodesStats,
