@@ -43,6 +43,8 @@ Stats options:
   -p --port <port>              Port of zabbix server [default: 10051]
   --prefix <prefix>             Add part of your prefix for key
                                   [default: None_pfx].
+  --hostname <hostname>         Override hostname used to identify in zabbix server
+                                  [default: None].
 
 Discovery options:
   --discovery                   Run low-level discovery for determine
@@ -90,10 +92,13 @@ Misc options:
 		)
 	}
 
-	hostname, err := os.Hostname()
-	if err != nil {
-		fmt.Println(err.Error())
-		os.Exit(1)
+	hostname := args["--hostname"].(string)
+	if hostname == "None" {
+		hostname, err = os.Hostname()
+		if err != nil {
+			fmt.Println(err.Error())
+			os.Exit(1)
+		}
 	}
 
 	var metrics []*zsend.Metric
