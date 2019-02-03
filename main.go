@@ -30,7 +30,9 @@ Options:
   --type <type>                 Type of statistics: global (cluster and nodes)
                                   or indices [default: global].
   -e --elasticsearch <dsn>      DSN of Elasticsearch server
-                                  [default: 127.0.0.1:9200].
+                                  [default: ` + obtainESDSN() + `].
+  -c --ca <path>                Path to custom CA.
+                                  [default: ` + obtainCAPath() + `].
   --agg-group <group>           Group name which will be use for aggregate
                                   item values [default: None].
   -u --user <name>              User for authenticate through 
@@ -57,7 +59,12 @@ Misc options:
 
 	args, _ := docopt.Parse(usage, nil, true, version, false)
 
-	elasticDSN := args["--elasticsearch"].(string)
+	elasticDSN := parseDSN(args["--elasticsearch"].(string))
+	httpClient, err := makeHTTPClient(args["--ca"].(string))
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
 
 	aggGroup := args["--agg-group"].(string)
 
@@ -115,6 +122,7 @@ Misc options:
 		indicesStats, err := getIndicesStats(
 			elasticDSN,
 			elasticsearchAuthToken,
+			httpClient,
 		)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -141,6 +149,7 @@ Misc options:
 		clusterHealth, err := getClusterHealth(
 			elasticDSN,
 			elasticsearchAuthToken,
+			httpClient,
 		)
 		if err != nil {
 			fmt.Println(err.Error())
@@ -150,6 +159,7 @@ Misc options:
 		nodesStats, err := getNodeStats(
 			elasticDSN,
 			elasticsearchAuthToken,
+			httpClient,
 		)
 		if err != nil {
 			fmt.Println(err.Error())

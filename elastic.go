@@ -140,9 +140,8 @@ type ElasticIndicesStatsIndex struct {
 func getClusterHealth(
 	elasticDSN string,
 	elasticsearchAuthToken string,
+	client *http.Client,
 ) (*ElasticClusterHealth, error) {
-
-	client := &http.Client{}
 
 	var elasticClusterHealth ElasticClusterHealth
 
@@ -194,9 +193,8 @@ func getClusterHealth(
 func getNodeStats(
 	elasticDSN string,
 	elasticsearchAuthToken string,
+	client *http.Client,
 ) (*ElasticNodesStats, error) {
-
-	client := &http.Client{}
 
 	var elasticNodesStats ElasticNodesStats
 
@@ -229,7 +227,6 @@ func getNodeStats(
 		return nil, fmt.Errorf(
 			"can`t get node stats, Elasticsearch node returned %d HTTP code",
 			nodeStatsResponse.StatusCode,
-			http.StatusOK,
 		)
 	}
 
@@ -248,9 +245,8 @@ func getNodeStats(
 func getIndicesStats(
 	elasticDSN string,
 	elasticsearchAuthToken string,
+	client *http.Client,
 ) (*ElasticIndicesStats, error) {
-
-	client := &http.Client{}
 
 	var elasticIndicesStats ElasticIndicesStats
 
