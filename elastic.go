@@ -145,7 +145,7 @@ func getClusterHealth(
 
 	var elasticClusterHealth ElasticClusterHealth
 
-	clutserHealthURL := fmt.Sprintf("http://%s/_cluster/health", elasticDSN)
+	clutserHealthURL := fmt.Sprintf("%s/_cluster/health", elasticDSN)
 	request, err := http.NewRequest("GET", clutserHealthURL, nil)
 	if err != nil {
 		return nil, hierr.Errorf(
@@ -198,7 +198,7 @@ func getNodeStats(
 
 	var elasticNodesStats ElasticNodesStats
 
-	nodeStatsURL := fmt.Sprintf("http://%s/_nodes/_local/stats", elasticDSN)
+	nodeStatsURL := fmt.Sprintf("%s/_nodes/_local/stats", elasticDSN)
 	request, err := http.NewRequest("GET", nodeStatsURL, nil)
 	if err != nil {
 		return nil, hierr.Errorf(
@@ -250,7 +250,7 @@ func getIndicesStats(
 
 	var elasticIndicesStats ElasticIndicesStats
 
-	indicesStatsURL := fmt.Sprintf("http://%s/_stats", elasticDSN)
+	indicesStatsURL := fmt.Sprintf("%s/_stats", elasticDSN)
 	request, err := http.NewRequest("GET", indicesStatsURL, nil)
 	if err != nil {
 		return nil, hierr.Errorf(
