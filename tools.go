@@ -14,8 +14,8 @@ import (
 func parseDSN(rawDSN string) string {
 	DSN := strings.TrimSpace(rawDSN)
 
-	if !strings.HasPrefix("http://", DSN) &&
-		!strings.HasPrefix("https://", DSN) {
+	if !strings.HasPrefix(DSN, "http://") &&
+		!strings.HasPrefix(DSN, "https://") {
 
 		return fmt.Sprintf("http://%s", DSN)
 	}
