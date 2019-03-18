@@ -50,6 +50,12 @@ https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster-health.h
 
 ### Installation
 
+##### Notice
+
+Before manual installation you should check `Include` option in your `zabbix-agent` configuration, it should be uncomment and check that include path are the same with this installation rule - https://github.com/zarplata/zabbix-agent-extension-elasticsearch/blob/master/Makefile#L43 otherwise you should change it to your include path.
+
+After installation you should restart your `zabbix-agent` manually for inclusion new `UserParameter` from extension configuration.
+
 #### Manual build
 
 ```sh
@@ -64,6 +70,7 @@ make install
 # By default, binary installs into /usr/bin/ and zabbix config in /etc/zabbix/zabbix_agentd.conf.d/ but,
 # you may manually copy binary to your executable path and zabbix config to specific include directory
 ```
+
 
 #### Arch Linux package
 ```sh
