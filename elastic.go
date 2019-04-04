@@ -139,6 +139,7 @@ type ElasticIndicesStatsIndex struct {
 
 func getClusterHealth(
 	elasticDSN string,
+	protocol string,
 	elasticsearchAuthToken string,
 ) (*ElasticClusterHealth, error) {
 
@@ -146,7 +147,7 @@ func getClusterHealth(
 
 	var elasticClusterHealth ElasticClusterHealth
 
-	clutserHealthURL := fmt.Sprintf("http://%s/_cluster/health", elasticDSN)
+	clutserHealthURL := fmt.Sprintf("%s://%s/_cluster/health", protocol, elasticDSN)
 	request, err := http.NewRequest("GET", clutserHealthURL, nil)
 	if err != nil {
 		return nil, hierr.Errorf(
@@ -193,6 +194,7 @@ func getClusterHealth(
 
 func getNodeStats(
 	elasticDSN string,
+	protocol string,
 	elasticsearchAuthToken string,
 ) (*ElasticNodesStats, error) {
 
@@ -200,7 +202,7 @@ func getNodeStats(
 
 	var elasticNodesStats ElasticNodesStats
 
-	nodeStatsURL := fmt.Sprintf("http://%s/_nodes/_local/stats", elasticDSN)
+	nodeStatsURL := fmt.Sprintf("%s://%s/_nodes/_local/stats", protocol, elasticDSN)
 	request, err := http.NewRequest("GET", nodeStatsURL, nil)
 	if err != nil {
 		return nil, hierr.Errorf(
@@ -247,6 +249,7 @@ func getNodeStats(
 
 func getIndicesStats(
 	elasticDSN string,
+	protocol string,
 	elasticsearchAuthToken string,
 ) (*ElasticIndicesStats, error) {
 
@@ -254,7 +257,7 @@ func getIndicesStats(
 
 	var elasticIndicesStats ElasticIndicesStats
 
-	indicesStatsURL := fmt.Sprintf("http://%s/_stats", elasticDSN)
+	indicesStatsURL := fmt.Sprintf("%s://%s/_stats", protocol, elasticDSN)
 	request, err := http.NewRequest("GET", indicesStatsURL, nil)
 	if err != nil {
 		return nil, hierr.Errorf(

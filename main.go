@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
 
@@ -31,6 +32,8 @@ Options:
                                   or indices [default: global].
   -e --elasticsearch <dsn>      DSN of Elasticsearch server
                                   [default: 127.0.0.1:9200].
+  --protocol <http|https>	Protocol used to access your elasticsearch cluster
+  				  [default: http].
   --agg-group <group>           Group name which will be use for aggregate
                                   item values [default: None].
   -u --user <name>              User for authenticate through 
@@ -58,6 +61,17 @@ Misc options:
 	args, _ := docopt.Parse(usage, nil, true, version, false)
 
 	elasticDSN := args["--elasticsearch"].(string)
+
+	protocol := strings.ToLower(args["--protocol"].(string))
+	if protocol != "" {
+		var re = regexp.MustCompile(`(http|https)`)
+		if !re.MatchString(protocol) {
+			fmt.Println("Protocol can be either 'http' or 'https'")
+			os.Exit(1)
+		}
+	} else {
+		protocol = "http"
+	}
 
 	aggGroup := args["--agg-group"].(string)
 
@@ -114,6 +128,7 @@ Misc options:
 
 		indicesStats, err := getIndicesStats(
 			elasticDSN,
+			protocol,
 			elasticsearchAuthToken,
 		)
 		if err != nil {
@@ -140,6 +155,7 @@ Misc options:
 	case "global":
 		clusterHealth, err := getClusterHealth(
 			elasticDSN,
+			protocol,
 			elasticsearchAuthToken,
 		)
 		if err != nil {
@@ -149,6 +165,7 @@ Misc options:
 
 		nodesStats, err := getNodeStats(
 			elasticDSN,
+			protocol,
 			elasticsearchAuthToken,
 		)
 		if err != nil {
