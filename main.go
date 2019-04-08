@@ -32,7 +32,7 @@ Options:
                                   or indices [default: global].
   -e --elasticsearch <dsn>      DSN of Elasticsearch server
                                   [default: 127.0.0.1:9200].
-  --protocol <http|https>	Protocol used to access your elasticsearch cluster
+  --protocol=<http|https>	Protocol used to access your elasticsearch cluster
   				  [default: http].
   --agg-group <group>           Group name which will be use for aggregate
                                   item values [default: None].
@@ -69,8 +69,6 @@ Misc options:
 			fmt.Println("Protocol can be either 'http' or 'https'")
 			os.Exit(1)
 		}
-	} else {
-		protocol = "http"
 	}
 
 	aggGroup := args["--agg-group"].(string)
