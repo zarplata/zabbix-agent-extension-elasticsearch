@@ -32,7 +32,7 @@ Options:
                                   or indices [default: global].
   -e --elasticsearch <dsn>      DSN of Elasticsearch server
                                   [default: 127.0.0.1:9200].
-  --protocol=<http|https>	Protocol used to access your elasticsearch cluster
+  --protocol=<http|https>       Protocol used to access your elasticsearch cluster
   				  [default: http].
   --agg-group <group>           Group name which will be use for aggregate
                                   item values [default: None].
