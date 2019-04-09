@@ -3750,7 +3750,7 @@
             <macros>
                 <macro>
                     <macro>{$ES_ADDRESS}</macro>
-                    <value>127.0.0.1:9200</value>
+                    <value>http://127.0.0.1:9200</value>
                 </macro>
                 <macro>
                     <macro>{$ES_PASSWORD}</macro>
