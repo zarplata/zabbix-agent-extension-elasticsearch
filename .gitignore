@@ -2,5 +2,5 @@ pkg/
 src/
 *tar.xz
 zabbix-agent-extension-elasticsearch/
-zabbix-agent-extension-elasticsearch/
+./zabbix-agent-extension-elasticsearch
 vendor/*
