@@ -109,6 +109,10 @@ If you need change key `elasticsearch.*` -> `YOUR_PREFIX_PART.elasticsearch.*`, 
 
 This extension support basic authentication which provided by X-Pack. For authentication in Elasticsearch you must set valid values in template macros - `${ES_USER}` and `${ES_PASSWORD}`
 
-### Customize Elasticsearch ip/port.
+### Customize Elasticsearch address.
 
-Just change `{$ES_ADDRESS}` macro in template.
+You can customize you Elasticsearch listen address.
+Just change`{$ES_ADDRESS}` macros in template.
+Possible values are - `(http|https)://host:port`
+
+Be note if you choose `https` and have self-signed certificate you also should add path to you CA in marcos `{$CA_PATH}`
