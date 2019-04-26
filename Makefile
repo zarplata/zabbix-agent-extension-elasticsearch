@@ -1,8 +1,9 @@
-.PHONY: all clean-all build cleand-deps deps ver
+.PHONY: all clean-all build cleand-deps deps ver make-gopath
 
 DATE := $(shell git log -1 --format="%cd" --date=short | sed s/-//g)
 COUNT := $(shell git rev-list --count HEAD)
 COMMIT := $(shell git rev-parse --short HEAD)
+CWD := $(shell pwd)
 
 BINARYNAME := zabbix-agent-extension-elasticsearch
 CONFIG := zabbix-agent-extension-elasticsearch.conf
@@ -13,7 +14,7 @@ LDFLAGS := "-X main.version=${VERSION}"
 
 default: all 
 
-all: clean-all deps build
+all: clean-all make-gopath deps build
 
 ver:
 	@echo ${VERSION}
@@ -21,11 +22,14 @@ ver:
 clean-all: clean-deps
 	@echo Clean builded binaries
 	rm -rf .out/
+	rm -rf .gopath/
 	@echo Done
 
 build:
 	@echo Build
-	go build -v -o .out/${BINARYNAME} -ldflags ${LDFLAGS} *.go
+	cd ${CWD}/.gopath/src/${BINARYNAME}; \
+		GOPATH=${CWD}/.gopath \
+		go build  -v -o .out/${BINARYNAME} -ldflags ${LDFLAGS} *.go
 	@echo Done
 
 clean-deps:
@@ -34,12 +38,20 @@ clean-deps:
 
 deps:
 	@echo Fetch dependencies
-	dep ensure -v
+	cd ${CWD}/.gopath/src/${BINARYNAME}; \
+		GOPATH=${CWD}/.gopath \
+		dep ensure -v
+
+make-gopath:
+	@echo Creating GOPATH
+	mkdir -p .gopath/src
+	ln -s ${CWD} ${CWD}/.gopath/src/${BINARYNAME}
 
 install:
 	@echo Install
 	cp .out/${BINARYNAME} /usr/bin/${BINARYNAME}
-	cp zabbix-agent-extension-elasticsearch.conf /etc/zabbix/zabbix_agentd.conf.d/zabbix-agent-extension-elasticsearch.conf
+	cp zabbix-agent-extension-elasticsearch.conf \
+		/etc/zabbix/zabbix_agentd.conf.d/zabbix-agent-extension-elasticsearch.conf
 	@echo Done
 
 remove:
