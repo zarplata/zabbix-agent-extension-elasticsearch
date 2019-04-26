@@ -174,6 +174,13 @@ func createNodeStatsIndices(
 		prefix,
 	)
 
+	metrics = createNodeStatsIndicesGet(
+		hostname,
+		&nodeStats,
+		metrics,
+		prefix,
+	)
+
 	return metrics
 }
 
@@ -693,6 +700,40 @@ func createNodeStatsIndicesQueryCache(
 				"node_stats.indices.query_cache.evictions",
 			),
 			strconv.Itoa(int(nodeStats.Indices.QueryCache.Evictions)),
+		),
+	)
+
+	return metrics
+}
+
+func createNodeStatsIndicesGet(
+	hostname string,
+	nodeStats *ElasticNodeStats,
+	metrics []*zsend.Metric,
+	prefix string,
+) []*zsend.Metric {
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.get.missing_total",
+			),
+			strconv.Itoa(int(nodeStats.Indices.Get.MissingTotal)),
+		),
+	)
+
+	metrics = append(
+		metrics,
+		zsend.NewMetric(
+			hostname,
+			makePrefix(
+				prefix,
+				"node_stats.indices.get.missing_time_in_millis",
+			),
+			strconv.Itoa(int(nodeStats.Indices.Get.MissingTimeInMillis)),
 		),
 	)
 
