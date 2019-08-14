@@ -1,0 +1,8 @@
+github.com/blacked/go-zabbix v0.0.0-20170118040903-3c6a95ec4fdc h1:Ati6LK4Cd96ZjshZWdVSNq8e8E13krbSMskWJHfXpB4=
+github.com/blacked/go-zabbix v0.0.0-20170118040903-3c6a95ec4fdc/go.mod h1:MQFa+aV+n8IIKW8TvMLPCoq/HemkprtE8qU+pf8wXNo=
+github.com/docopt/docopt-go v0.0.0-20160216232012-784ddc588536 h1:rHnpq7uNlix5l7tWZ55iJcHHrxCPnOVF4FGb7qOT2Jc=
+github.com/docopt/docopt-go v0.0.0-20160216232012-784ddc588536/go.mod h1:WwZ+bS3ebgob9U8Nd0kOddGdZWjyMGR8Wziv+TBNwSE=
+github.com/reconquest/hierr-go v0.0.0-20170824213838-7d09c0176fd2 h1:v3ctQXyIHprCI7s42LGmMYbulnnpjeD4zcvq78D1ung=
+github.com/reconquest/hierr-go v0.0.0-20170824213838-7d09c0176fd2/go.mod h1:dF8sYs86hXr+kKjDVvxDZYMUsTm5yr0PFQqLer/xsrk=
+github.com/reconquest/karma-go v0.0.0-20190402203801-1dd2a756e507 h1:UC27m2Ya1n6jHTFzIY3EtVm9Sb1b08QEo30uRK1c/B4=
+github.com/reconquest/karma-go v0.0.0-20190402203801-1dd2a756e507/go.mod h1:oTXKs9J7KQ1gCpnvSwCbH9vlvELZFfUSbEbrr2ABeo0=
