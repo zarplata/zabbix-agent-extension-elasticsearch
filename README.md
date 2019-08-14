@@ -56,6 +56,9 @@ Before manual installation you should check `Include` option in your `zabbix-age
 
 After installation you should restart your `zabbix-agent` manually for inclusion new `UserParameter` from extension configuration.
 
+#### Build dependency
+ - go >= 1.11
+
 #### Manual build
 
 ```sh
