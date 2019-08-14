@@ -1,4 +1,4 @@
-.PHONY: all clean-all build cleand-deps deps ver make-gopath
+.PHONY: all clean-all build deps ver make-gopath
 
 DATE := $(shell git log -1 --format="%cd" --date=short | sed s/-//g)
 COUNT := $(shell git rev-list --count HEAD)
@@ -14,38 +14,25 @@ LDFLAGS := "-X main.version=${VERSION}"
 
 default: all 
 
-all: clean-all make-gopath deps build
+all: clean-all deps build
 
 ver:
 	@echo ${VERSION}
 
-clean-all: clean-deps
+clean-all: 
 	@echo Clean builded binaries
 	rm -rf .out/
-	rm -rf .gopath/
 	@echo Done
 
 build:
 	@echo Build
-	cd ${CWD}/.gopath/src/${BINARYNAME}; \
-		GOPATH=${CWD}/.gopath \
-		go build  -v -o .out/${BINARYNAME} -ldflags ${LDFLAGS} *.go
+	GO111MODULE=on go build -v -o .out/${BINARYNAME} -ldflags ${LDFLAGS} *.go
 	@echo Done
-
-clean-deps:
-	@echo Clean dependencies
-	rm -rf vendor/*
 
 deps:
 	@echo Fetch dependencies
-	cd ${CWD}/.gopath/src/${BINARYNAME}; \
-		GOPATH=${CWD}/.gopath \
-		dep ensure -v
+	go get 
 
-make-gopath:
-	@echo Creating GOPATH
-	mkdir -p .gopath/src
-	ln -s ${CWD} ${CWD}/.gopath/src/${BINARYNAME}
 
 install:
 	@echo Install
