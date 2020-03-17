@@ -8,7 +8,7 @@ _branch=${BRANCH:-master}
 pkgdesc="Extension for zabbix-agentd for monitoring Elasticsearch service"
 arch=('any')
 license=('GPL')
-makedepends=('go')
+makedepends=('go' 'git' 'dep')
 depends=('zabbix-agent')
 install="install.sh"
 source=("git+https://github.com/zarplata/$pkgname.git#branch=$_branch")
