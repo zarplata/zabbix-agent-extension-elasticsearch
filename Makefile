@@ -6,13 +6,13 @@ COMMIT := $(shell git rev-parse --short HEAD)
 CWD := $(shell pwd)
 
 BINARYNAME := zabbix-agent-extension-elasticsearch
-CONFIG := zabbix-agent-extension-elasticsearch.conf
+CONFIG := zabbix_agent/zabbix-agent-extension-elasticsearch.conf
 VERSION := "${DATE}.${COUNT}_${COMMIT}"
 
 LDFLAGS := "-X main.version=${VERSION}"
 
 
-default: all 
+default: all
 
 all: clean-all make-gopath deps build
 
@@ -29,12 +29,12 @@ build:
 	@echo Build
 	cd ${CWD}/.gopath/src/${BINARYNAME}; \
 		GOPATH=${CWD}/.gopath \
-		go build  -v -o .out/${BINARYNAME} -ldflags ${LDFLAGS} *.go
+		go build  -v -o ${CWD}/.out/${BINARYNAME} -ldflags ${LDFLAGS} *.go
 	@echo Done
 
 clean-deps:
 	@echo Clean dependencies
-	rm -rf vendor/*
+	rm -rf code/vendor/
 
 deps:
 	@echo Fetch dependencies
@@ -45,18 +45,17 @@ deps:
 make-gopath:
 	@echo Creating GOPATH
 	mkdir -p .gopath/src
-	ln -s ${CWD} ${CWD}/.gopath/src/${BINARYNAME}
+	ln -s ${CWD}/code ${CWD}/.gopath/src/${BINARYNAME}
 
 install:
 	@echo Install
 	cp .out/${BINARYNAME} /usr/bin/${BINARYNAME}
-	cp zabbix-agent-extension-elasticsearch.conf \
+	cp zabbix_agent/zabbix-agent-extension-elasticsearch.conf \
 		/etc/zabbix/zabbix_agentd.conf.d/zabbix-agent-extension-elasticsearch.conf
 	@echo Done
 
 remove:
 	@echo Remove
-	rm /usr/bin/${BINARYNAME}
-	rm /etc/zabbix/zabbix_agentd.conf.d/zabbix-agent-extension-elasticsearch.conf
+	rm -f /usr/bin/${BINARYNAME}
+	rm -f /etc/zabbix/zabbix_agentd.conf.d/zabbix-agent-extension-elasticsearch.conf
 	@echo Done
-
