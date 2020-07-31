@@ -4,4 +4,4 @@
 /src
 /pkg
 /zabbix-agent-extension-elasticsearch
-cmd/zabbix-agent-extension-elasticsearch/vendor/*
+vendor/*
