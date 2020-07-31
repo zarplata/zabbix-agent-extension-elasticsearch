@@ -1,5 +1,4 @@
-.gopath/
-.out/
+.out/ 
 *.xz
 /src
 /pkg
