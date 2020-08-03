@@ -35,7 +35,7 @@ Options:
                                   [default: ` + obtainCAPath() + `].
   --agg-group <group>           Group name which will be use for aggregate
                                   item values [default: None].
-  -u --user <name>              User for authenticate through 
+  -u --user <name>              User for authenticate through
                                   Elasticsearch API [default: None].
   -x --password <string>        Password for user [default: None].
 

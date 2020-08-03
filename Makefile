@@ -1,13 +1,15 @@
 .PHONY: all verion test clean install
 
 VERSION := $(shell git log -1 --format=%cd.$(shell git rev-list --count HEAD).%h --date=format:%y%m%d)
-LDFLAGS := "-X main.version=$(VERSION)"
 BINARY  := zabbix-agent-extension-elasticsearch
+
+LDFLAGS := "-X main.version=$(VERSION)"
+GOFLAGS := -buildmode=pie -trimpath -mod=readonly -modcacherw -ldflags $(LDFLAGS)
 
 all: $(BINARY)
 
-$(BINARY): *.go
-	go build -v -o $@ -ldflags $(LDFLAGS)
+$(BINARY): cmd/*.go
+	go build -v -o $@ $(GOFLAGS) ./cmd/...
 
 version:
 	@echo $(VERSION)
