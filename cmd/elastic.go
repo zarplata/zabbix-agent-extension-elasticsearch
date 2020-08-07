@@ -122,8 +122,9 @@ type ElasticIndicesStatsAll struct {
 }
 
 type ElasticIndicesStatsIndice struct {
-	Primaries ElasticIndicesStatsIndex `json:"primaries"`
-	Total     ElasticIndicesStatsIndex `json:"total"`
+	Primaries ElasticIndicesStatsIndex              `json:"primaries"`
+	Total     ElasticIndicesStatsIndex              `json:"total"`
+	Shards    map[string][]ElasticIndicesStatsShard `json:"shards"`
 }
 
 type ElasticIndicesStatsIndex struct {
@@ -135,6 +136,25 @@ type ElasticIndicesStatsIndex struct {
 		SizeInBytes          int64 `json:"size_in_bytes"`
 		ThrottleTimeInMillis int64 `json:"throttle_time_in_millis"`
 	} `json:"store"`
+}
+
+type ElasticIndicesStatsShard struct {
+	Store struct {
+		SizeInBytes          int64 `json:"size_in_bytes"`
+	} `json:"store"`
+}
+
+func (indice *ElasticIndicesStatsIndice) GetMaxStoreSizeInBytes() (max_store_size int64) {
+    max_store_size = 0
+    for i := range (*indice).Shards {
+        for _, p := range (*indice).Shards[i] {
+            if max_store_size < p.Store.SizeInBytes {
+                max_store_size = p.Store.SizeInBytes
+            }
+        }
+    }
+
+    return max_store_size
 }
 
 func getClusterHealth(
@@ -250,7 +270,7 @@ func getIndicesStats(
 
 	var elasticIndicesStats ElasticIndicesStats
 
-	indicesStatsURL := fmt.Sprintf("%s/_stats", elasticDSN)
+	indicesStatsURL := fmt.Sprintf("%s/_stats?level=shards", elasticDSN)
 	request, err := http.NewRequest("GET", indicesStatsURL, nil)
 	if err != nil {
 		return nil, hierr.Errorf(

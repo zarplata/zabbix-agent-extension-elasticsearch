@@ -743,6 +743,48 @@ func createIndicesStats(
 				strconv.Itoa(int(indexStats.Primaries.Store.SizeInBytes)),
 			),
 		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					fmt.Sprintf(
+						"indices_stats.shards.max_size.[%s]",
+						indexName,
+					),
+				),
+				strconv.Itoa(int(indexStats.GetMaxStoreSizeInBytes())),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					fmt.Sprintf(
+						"indices_stats.shards.count.[%s]",
+						indexName,
+					),
+				),
+				strconv.Itoa(len(indexStats.Shards)),
+			),
+		)
+		metrics = append(
+			metrics,
+			zsend.NewMetric(
+				hostname,
+				makePrefix(
+					prefix,
+					fmt.Sprintf(
+						"indices_stats.shards.replicas.[%s]",
+						indexName,
+					),
+				),
+				strconv.Itoa(len(indexStats.Shards["0"])),
+			),
+		)
 
 	}
 
