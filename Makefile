@@ -1,6 +1,6 @@
 .PHONY: all verion test clean install
 
-VERSION := $(shell git log -1 --format=%cd.$(shell git rev-list --count HEAD).%h --date=format:%y%m%d)
+VERSION := $(shell git log -1 --format=%cd.$(shell git rev-list --count HEAD).%h --date=format:%Y%m%d)
 BINARY  := zabbix-agent-extension-elasticsearch
 PREFIX  := .
 
